@@ -133,8 +133,10 @@ function App() {
         <div className="pb-28">
           {renderContent()}
         </div>
-        <FloatingDock activeTab={activeTab} setActiveTab={setActiveTab} />
       </Layout>
+
+      {/* Floating Navigation Dock - Rendered outside Layout to prevent layout scale/filter positioning issues */}
+      <FloatingDock activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Global Slide-out Drawer */}
       <ReviewDrawer 
