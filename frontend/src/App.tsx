@@ -17,10 +17,12 @@ import { UrgentTask } from './types';
 // Placeholder mock component for Vault to prevent compilation errors
 import { Vault } from './components/Vault';
 import { LandingPage } from './components/LandingPage';
+import { AuthPage } from './components/AuthPage';
 
 function App() {
   const [appLoading, setAppLoading] = useState(true);
   const [showLanding, setShowLanding] = useState(true);
+  const [showAuth, setShowAuth] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
   const [activeReviewTask, setActiveReviewTask] = useState<UrgentTask | null>(null);
   const [sanctuaryActive, setSanctuaryActive] = useState(false);
@@ -141,7 +143,13 @@ function App() {
         {appLoading ? (
           <SplashScreen key="splash" onComplete={() => setAppLoading(false)} />
         ) : showLanding ? (
-          <LandingPage key="landing" onEnterApp={() => setShowLanding(false)} />
+          <LandingPage key="landing" onEnterApp={() => { setShowLanding(false); setShowAuth(true); }} />
+        ) : showAuth ? (
+          <AuthPage 
+            key="auth" 
+            onSuccess={() => setShowAuth(false)} 
+            onBack={() => { setShowLanding(true); setShowAuth(false); }} 
+          />
         ) : (
           <motion.div
             key="app-root"
