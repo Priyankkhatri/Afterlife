@@ -101,8 +101,8 @@ export const Layout: React.FC<LayoutProps> = ({ children, onSanctuaryClick, isSa
         {/* Top Header Row with brand logo, soundscape player, dark mode toggle, and Take a Break sanctuary toggle */}
         <header className="flex items-center justify-between w-full mb-8 font-sans border-b border-border-light pb-4 select-none">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-accent-warm/10 text-accent-warm flex items-center justify-center">
-              <Heart className="w-3.5 h-3.5 fill-accent-warm/10" />
+            <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+              <Heart className="w-3.5 h-3.5 fill-primary/10" />
             </div>
             <span className="font-serif text-lg text-text-primary font-medium tracking-wide">Afterlife</span>
           </div>

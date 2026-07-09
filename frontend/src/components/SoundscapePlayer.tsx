@@ -125,7 +125,7 @@ export const SoundscapePlayer: React.FC = () => {
   return (
     <div className="flex items-center gap-3 bg-white/40 dark:bg-black/30 backdrop-blur-md border border-white/50 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-sm select-none">
       <div className="flex items-center gap-1.5">
-        <Sparkles className="w-3.5 h-3.5 text-accent-warm" />
+        <Sparkles className="w-3.5 h-3.5 text-primary" />
         <span className="text-[10px] uppercase tracking-widest font-semibold text-text-muted">Soundscape</span>
       </div>
 
@@ -142,14 +142,14 @@ export const SoundscapePlayer: React.FC = () => {
               repeat: isPlaying ? Infinity : 0,
               ease: 'easeInOut'
             }}
-            className="w-0.5 bg-accent-warm/60 rounded-full"
+            className="w-0.5 bg-primary/60 rounded-full"
           />
         ))}
       </div>
 
       <button
         onClick={toggleSound}
-        className="w-6 h-6 rounded-full bg-surface hover:bg-accent-warm/5 flex items-center justify-center border border-border-light text-text-primary hover:text-accent-warm transition-all duration-300 cursor-pointer focus:outline-none focus-ring"
+        className="w-6 h-6 rounded-full bg-surface hover:bg-primary/5 flex items-center justify-center border border-border-light text-text-primary hover:text-primary transition-all duration-300 cursor-pointer focus:outline-none focus-ring"
         aria-label={isPlaying ? "Pause soothing background soundscape" : "Play soothing background soundscape"}
       >
         {isPlaying ? (
