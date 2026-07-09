@@ -23,7 +23,7 @@ export const SanctuaryModal = ({ isOpen, onClose }) => {
                 repeat: Infinity,
                 ease: 'easeInOut',
               }}
-              className="absolute w-56 h-56 rounded-full bg-[#8CA596]"
+              className="absolute w-56 h-56 rounded-full bg-[#E29A76]"
             />
             <motion.div
               animate={{
@@ -36,12 +36,12 @@ export const SanctuaryModal = ({ isOpen, onClose }) => {
                 ease: 'easeInOut',
                 delay: 0.5,
               }}
-              className="absolute w-44 h-44 rounded-full bg-[#8CA596]"
+              className="absolute w-44 h-44 rounded-full bg-[#E29A76]"
             />
             
             {/* Innermost soft node */}
             <div className="w-24 h-24 rounded-full bg-white shadow-antigravity flex items-center justify-center z-10 border border-[#F0F0F0]">
-              <span className="text-[10px] uppercase tracking-widest font-semibold text-primary font-sans">Breathe</span>
+              <span className="text-[10px] uppercase tracking-widest font-semibold text-accent-warm font-sans">Breathe</span>
             </div>
           </div>
 

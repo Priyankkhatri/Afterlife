@@ -17,7 +17,7 @@ export const DocumentCard = ({ doc, onView, onArchive }) => {
         </div>
         <span className={`text-[9px] uppercase tracking-wider font-semibold px-2.5 py-0.5 rounded-full ${
           doc.status === 'Analyzed' || doc.status === 'Verified'
-            ? 'text-primary bg-primary/10'
+            ? 'text-accent-warm bg-accent-warm/10'
             : 'text-secondary bg-secondary/10'
         }`}>
           {doc.status}
@@ -42,7 +42,7 @@ export const DocumentCard = ({ doc, onView, onArchive }) => {
           >
             <button
               onClick={() => onView && onView(doc)}
-              className="flex items-center gap-1.5 px-3.5 py-2 text-xs text-text-primary hover:text-primary hover:bg-primary/5 rounded-full border border-[#F0F0F0] transition-colors"
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs text-text-primary hover:text-accent-warm hover:bg-accent-warm/5 rounded-full border border-[#F0F0F0] transition-colors"
             >
               <Eye className="w-3.5 h-3.5" />
               View

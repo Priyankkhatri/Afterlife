@@ -28,7 +28,7 @@ export const FloatingDock = ({ activeTab, setActiveTab }) => {
                 whileHover={{ scale: 1.15 }}
                 whileTap={{ scale: 0.95 }}
                 className={`transition-colors duration-200 ${
-                  isActive ? 'text-primary' : 'text-text-muted hover:text-text-primary'
+                  isActive ? 'text-accent-warm' : 'text-text-muted hover:text-text-primary'
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -37,7 +37,7 @@ export const FloatingDock = ({ activeTab, setActiveTab }) => {
               {isActive && (
                 <motion.div
                   layoutId="activeDot"
-                  className="absolute -bottom-1.5 w-1 h-1 rounded-full bg-primary"
+                  className="absolute -bottom-1.5 w-1.5 h-1.5 rounded-full bg-accent-warm"
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 />
               )}

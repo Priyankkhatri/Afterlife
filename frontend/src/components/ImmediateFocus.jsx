@@ -49,7 +49,7 @@ export const ImmediateFocus = ({ onAction }) => {
             </div>
             <button
               onClick={() => onAction && onAction(task)}
-              className="self-start md:self-auto flex items-center gap-2 px-4 py-2 text-xs font-medium text-primary bg-primary/5 hover:bg-primary/10 rounded-full border border-primary/10 transition-colors cursor-pointer"
+              className="self-start md:self-auto flex items-center gap-2 px-4 py-2 text-xs font-medium text-accent-warm bg-accent-warm/5 hover:bg-accent-warm/10 rounded-full border border-accent-warm/10 transition-colors cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5" />
               Review AI Draft

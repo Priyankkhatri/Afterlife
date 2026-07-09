@@ -70,8 +70,8 @@ export const UploadZone = ({ onUploadComplete }) => {
         onDrop={handleDrop}
         whileHover={{ scale: 1.01 }}
         animate={{
-          borderColor: isDragActive ? '#8CA596' : '#A6B4C4',
-          backgroundColor: isDragActive ? 'rgba(140, 165, 150, 0.02)' : 'rgba(255, 255, 255, 0.4)'
+          borderColor: isDragActive ? '#E29A76' : '#A6B4C4',
+          backgroundColor: isDragActive ? 'rgba(226, 154, 118, 0.02)' : 'rgba(255, 255, 255, 0.4)'
         }}
         transition={{ duration: 0.3 }}
         className="relative w-full rounded-3xl border-2 border-dashed p-10 md:p-14 flex flex-col items-center justify-center text-center cursor-pointer bg-gradient-to-b from-white to-transparent shadow-sm hover:shadow-antigravity"
@@ -112,7 +112,7 @@ export const UploadZone = ({ onUploadComplete }) => {
           >
             <div className="flex items-center justify-between text-xs font-sans font-light text-text-muted">
               <span className="animate-pulse flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-primary animate-spin" style={{ animationDuration: '3s' }} />
+                <Sparkles className="w-3.5 h-3.5 text-accent-warm animate-spin" style={{ animationDuration: '3s' }} />
                 Securing and reading details...
               </span>
               <span className="font-medium text-text-primary">{progress}%</span>
@@ -120,7 +120,7 @@ export const UploadZone = ({ onUploadComplete }) => {
             
             <div className="w-full h-[2px] bg-[#F0F0F0] rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-primary"
+                className="h-full bg-accent-warm"
                 initial={{ width: '0%' }}
                 animate={{ width: `${progress}%` }}
                 transition={{ ease: 'easeOut' }}

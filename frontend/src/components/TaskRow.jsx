@@ -21,8 +21,8 @@ export const TaskRow = ({ task, onToggle }) => {
         <div className="relative flex items-center justify-center shrink-0">
           <motion.div
             animate={{
-              backgroundColor: task.completed ? '#8CA596' : 'transparent',
-              borderColor: task.completed ? '#8CA596' : 'rgba(166, 180, 196, 0.4)'
+              backgroundColor: task.completed ? '#E29A76' : 'transparent',
+              borderColor: task.completed ? '#E29A76' : 'rgba(166, 180, 196, 0.4)'
             }}
             transition={{ duration: 0.3 }}
             className="w-6 h-6 rounded-full border flex items-center justify-center"

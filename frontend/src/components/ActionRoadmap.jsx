@@ -57,8 +57,8 @@ export const ActionRoadmap = ({ showToast }) => {
       {/* Header */}
       <FadeIn delay={0.1} className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[#F0F0F0] pb-8">
         <div>
-          <div className="flex items-center gap-2 text-primary mb-2">
-            <Calendar className="w-5 h-5 fill-primary/10" />
+          <div className="flex items-center gap-2 text-accent-warm mb-2">
+            <Calendar className="w-5 h-5 fill-accent-warm/10" />
             <span className="text-xs uppercase tracking-widest font-semibold font-sans">Action Roadmap</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-serif text-text-primary">Your Administrative Path</h1>
@@ -153,7 +153,7 @@ export const ActionRoadmap = ({ showToast }) => {
           <div className="bg-white rounded-3xl p-8 shadow-antigravity border border-[#F0F0F0] flex flex-col gap-6 relative overflow-hidden">
             <div className="absolute -top-12 -right-12 w-24 h-24 rounded-full bg-primary/5 blur-xl pointer-events-none" />
             <div className="flex flex-col gap-4">
-              <div className="p-3 rounded-full bg-secondary/10 text-secondary-hover w-fit">
+              <div className="p-3 rounded-full bg-accent-warm/10 text-accent-warm w-fit">
                 <HelpCircle className="w-5 h-5" />
               </div>
               <div>
@@ -164,9 +164,9 @@ export const ActionRoadmap = ({ showToast }) => {
               </div>
             </div>
             
-            <button className="flex items-center justify-between text-left p-3.5 rounded-2xl bg-background hover:bg-primary/5 border border-[#F0F0F0] hover:border-primary/20 transition-all duration-300 group cursor-pointer">
+            <button className="flex items-center justify-between text-left p-3.5 rounded-2xl bg-background hover:bg-accent-warm/5 border border-[#F0F0F0] hover:border-accent-warm/20 transition-all duration-300 group cursor-pointer">
               <span className="text-xs font-medium text-text-primary font-sans">Share access with family</span>
-              <ArrowUpRight className="w-4 h-4 text-text-muted group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+              <ArrowUpRight className="w-4 h-4 text-text-muted group-hover:text-accent-warm group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
             </button>
           </div>
         </FloatUp>

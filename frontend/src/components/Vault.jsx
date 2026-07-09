@@ -48,8 +48,8 @@ export const Vault = ({ showToast }) => {
       {/* Header */}
       <FadeIn delay={0.1} className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[#F0F0F0] pb-8">
         <div>
-          <div className="flex items-center gap-2 text-primary mb-2">
-            <ShieldCheck className="w-5 h-5 fill-primary/10" />
+          <div className="flex items-center gap-2 text-accent-warm mb-2">
+            <ShieldCheck className="w-5 h-5 fill-accent-warm/10" />
             <span className="text-xs uppercase tracking-widest font-semibold font-sans">Secure Storage</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-serif text-text-primary">Document Vault</h1>
@@ -57,7 +57,7 @@ export const Vault = ({ showToast }) => {
             Store, analyze, and retrieve transition paperwork in an encrypted environment.
           </p>
         </div>
-        <div className="flex items-center gap-2 text-xs font-sans text-primary bg-primary/5 border border-primary/15 rounded-2xl px-4 py-3 max-w-xs">
+        <div className="flex items-center gap-2 text-xs font-sans text-accent-warm bg-accent-warm/5 border border-accent-warm/15 rounded-2xl px-4 py-3 max-w-xs">
           <Info className="w-4 h-4 shrink-0" />
           <span className="font-light leading-relaxed">All documents are stored with end-to-end encryption.</span>
         </div>
