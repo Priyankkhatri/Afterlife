@@ -83,7 +83,7 @@ export const ActionRoadmap = ({ showToast }) => {
           {/* Section 1: Immediate Attention */}
           <div className="relative pl-10 flex flex-col gap-6">
             {/* Connector Node */}
-            <div className="absolute left-2 top-2 w-3.5 h-3.5 rounded-full bg-primary ring-4 ring-primary/15" />
+            <div className="absolute left-2 top-2 w-3.5 h-3.5 rounded-full bg-accent-warm ring-4 ring-accent-warm/15" />
             
             <FloatUp delay={0.2}>
               <h2 className="text-xl font-serif text-text-primary font-medium tracking-wide">Immediate Attention</h2>

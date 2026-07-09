@@ -6,7 +6,6 @@ import { Vault } from './components/Vault';
 import { ActionRoadmap } from './components/ActionRoadmap';
 import { ReviewDrawer } from './components/ReviewDrawer';
 import { SanctuaryModal } from './components/SanctuaryModal';
-import { CustomCursor } from './components/CustomCursor';
 import { Toast } from './components/Toast';
 import { FloatUp } from './components/MotionWrappers';
 import { 
@@ -119,11 +118,8 @@ function App() {
         );
     }
   };
-
   return (
     <>
-      {/* Custom Trailing Cursor */}
-      <CustomCursor />
 
       {/* Main Page Layout */}
       <Layout 

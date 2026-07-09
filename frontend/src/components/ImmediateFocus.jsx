@@ -35,7 +35,7 @@ export const ImmediateFocus = ({ onAction }) => {
     <div className="bg-white rounded-3xl p-8 shadow-antigravity border border-[#F0F0F0] flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <h3 className="font-serif text-2xl text-text-primary">Immediate Focus</h3>
-        <span className="text-[10px] uppercase tracking-widest font-semibold text-primary px-2.5 py-1 rounded-full bg-primary/10">
+        <span className="text-[10px] uppercase tracking-widest font-semibold text-accent-warm px-2.5 py-1 rounded-full bg-accent-warm/10">
           Priority
         </span>
       </div>

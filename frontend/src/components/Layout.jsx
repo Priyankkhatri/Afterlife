@@ -12,6 +12,11 @@ export const Layout = ({ children, onSanctuaryClick, isSanctuaryActive }) => {
           className="absolute -top-[10%] -left-[10%] w-[50vw] h-[50vw] rounded-full blur-[120px] opacity-[0.03]"
           style={{ backgroundColor: '#8CA596' }}
         />
+        {/* Soft Apricot sunset glow middle-right */}
+        <div 
+          className="absolute top-[20%] -right-[15%] w-[45vw] h-[45vw] rounded-full blur-[140px] opacity-[0.03]"
+          style={{ backgroundColor: '#E29A76' }}
+        />
         {/* Dusty Blue glow bottom-right */}
         <div 
           className="absolute -bottom-[10%] -right-[10%] w-[50vw] h-[50vw] rounded-full blur-[120px] opacity-[0.03]"
