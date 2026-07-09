@@ -3,7 +3,8 @@ import { FadeIn, FloatUp } from './MotionWrappers';
 import { ImmediateFocus } from './ImmediateFocus';
 import { DocumentVaultSnapshot } from './DocumentVaultSnapshot';
 import { QuietProgress } from './QuietProgress';
-import { Heart, HelpCircle, ArrowUpRight } from 'lucide-react';
+import { Heart } from 'lucide-react';
+import { BreathingCard } from './BreathingCard';
 
 export const Dashboard = ({ onReviewAction }) => {
   return (
@@ -30,25 +31,9 @@ export const Dashboard = ({ onReviewAction }) => {
           <ImmediateFocus onAction={onReviewAction} />
         </FloatUp>
 
-        {/* Bento Cell B: Help Guidance Card */}
-        <FloatUp delay={0.35} className="flex flex-col justify-between bg-white rounded-3xl p-8 shadow-antigravity border border-[#F0F0F0] relative overflow-hidden">
-          <div className="absolute -top-12 -right-12 w-24 h-24 rounded-full bg-primary/5 blur-xl pointer-events-none" />
-          <div className="flex flex-col gap-4">
-            <div className="p-3 rounded-full bg-accent-warm/10 text-accent-warm w-fit">
-              <HelpCircle className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="font-serif text-xl text-text-primary mb-2">Gentle Guidance</h3>
-              <p className="text-xs text-text-muted font-light leading-relaxed">
-                Administrative tasks can feel overwhelming. If you need help drafting letters, contacting banks, or understanding legal terms, we are here.
-              </p>
-            </div>
-          </div>
-
-          <button className="mt-6 flex items-center justify-between text-left p-3.5 rounded-2xl bg-background hover:bg-accent-warm/5 border border-[#F0F0F0] hover:border-accent-warm/20 transition-all duration-300 group cursor-pointer">
-            <span className="text-xs font-medium text-text-primary">Draft bank notice letter</span>
-            <ArrowUpRight className="w-4 h-4 text-text-muted group-hover:text-accent-warm group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-          </button>
+        {/* Bento Cell B: Interactive Box Breathing & Affirmations Card */}
+        <FloatUp delay={0.35}>
+          <BreathingCard />
         </FloatUp>
 
         {/* Bento Cell C: Document Vault Snapshot */}
