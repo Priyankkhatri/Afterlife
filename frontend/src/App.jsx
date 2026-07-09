@@ -3,10 +3,9 @@ import { Layout } from './components/Layout';
 import { FloatingDock } from './components/FloatingDock';
 import { Dashboard } from './components/Dashboard';
 import { Vault } from './components/Vault';
+import { ActionRoadmap } from './components/ActionRoadmap';
 import { FloatUp } from './components/MotionWrappers';
 import { 
-  Clock, 
-  Plus, 
   Mail, 
   Phone 
 } from 'lucide-react';
@@ -14,81 +13,12 @@ import {
 function App() {
   const [activeTab, setActiveTab] = useState('home');
 
-  // Tasks state
-  const [tasks, setTasks] = useState([
-    { id: '1', title: 'Request Certified Copies of Death Certificate', category: 'Legal & Certificates', dueDate: 'Due in 3 days', completed: false },
-    { id: '2', title: 'Notify Social Security Administration', category: 'Government & Benefits', dueDate: 'Due in 7 days', completed: false },
-    { id: '3', title: 'Close Credit Card & Subscription Accounts', category: 'Financial Services', dueDate: 'Completed', completed: true },
-    { id: '4', title: 'Initiate Probate & Estate Process', category: 'Estate Planning', dueDate: 'Due in 30 days', completed: false },
-  ]);
-
-  const toggleTask = (id) => {
-    setTasks(tasks.map(task => 
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ));
-  };
-
   const renderContent = () => {
     switch (activeTab) {
       case 'home':
         return <Dashboard />;
       case 'tasks':
-        return (
-          <div className="flex flex-col gap-10">
-            <FloatUp delay={0.1} className="border-b border-[#F0F0F0] pb-8">
-              <h1 className="text-4xl font-serif text-text-primary">Administrative Tasks</h1>
-              <p className="text-sm text-text-muted font-light mt-1">
-                A complete list of duties required to settle your family's estate. Work at your own pace.
-              </p>
-            </FloatUp>
-
-            <div className="flex flex-col gap-6 max-w-3xl">
-              <FloatUp delay={0.2} className="flex items-center justify-between">
-                <h2 className="text-xl font-serif text-text-primary">All Tasks ({tasks.length})</h2>
-                <button className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors">
-                  <Plus className="w-4 h-4" /> Add custom task
-                </button>
-              </FloatUp>
-
-              <div className="flex flex-col gap-4">
-                {tasks.map((task, index) => (
-                  <FloatUp 
-                    key={task.id} 
-                    delay={0.2 + (index * 0.05)} 
-                    className={`glass-panel p-6 rounded-2xl transition-all duration-300 ${task.completed ? 'opacity-60' : 'hover:-translate-y-0.5 hover:shadow-antigravity-hover'}`}
-                  >
-                    <div className="flex items-start gap-4">
-                      <button 
-                        onClick={() => toggleTask(task.id)}
-                        className={`mt-1 w-5 h-5 rounded-full border transition-colors flex items-center justify-center ${
-                          task.completed 
-                            ? 'bg-primary border-primary text-white' 
-                            : 'border-secondary/40 hover:border-primary'
-                        }`}
-                      >
-                        {task.completed && <span className="text-[10px]">✓</span>}
-                      </button>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between gap-4 mb-1">
-                          <h3 className={`font-sans font-medium text-base text-text-primary ${task.completed ? 'line-through text-text-muted/60' : ''}`}>
-                            {task.title}
-                          </h3>
-                          <span className="text-xs text-text-muted flex items-center gap-1 shrink-0 font-light">
-                            <Clock className="w-3.5 h-3.5" />
-                            {task.dueDate}
-                          </span>
-                        </div>
-                        <span className="text-[10px] uppercase tracking-wider font-semibold text-secondary/80 px-2 py-0.5 rounded bg-secondary/5 w-fit block mt-1">
-                          {task.category}
-                        </span>
-                      </div>
-                    </div>
-                  </FloatUp>
-                ))}
-              </div>
-            </div>
-          </div>
-        );
+        return <ActionRoadmap />;
       case 'vault':
         return <Vault />;
       case 'profile':
