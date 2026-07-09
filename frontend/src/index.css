@@ -29,14 +29,14 @@
   --color-background: var(--background);
   --color-surface: var(--surface);
   
-  --color-primary: #8CA596;
-  --color-primary-hover: #7A9384;
+  --color-primary: #E29A76;
+  --color-primary-hover: #D18965;
   
   --color-secondary: #A6B4C4;
   --color-secondary-hover: #95A3B3;
 
-  --color-accent-warm: #E29A76;
-  --color-accent-warm-hover: #D18965;
+  --color-accent-warm: #8CA596;
+  --color-accent-warm-hover: #7A9384;
   
   --color-text-primary: var(--text-primary);
   --color-text-muted: var(--text-muted);
