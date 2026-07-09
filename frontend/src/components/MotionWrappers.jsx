@@ -1,13 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-interface MotionWrapperProps {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-}
-
-export const FadeIn: React.FC<MotionWrapperProps> = ({ children, className = '', delay = 0 }) => {
+export const FadeIn = ({ children, className = '', delay = 0 }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -24,7 +18,7 @@ export const FadeIn: React.FC<MotionWrapperProps> = ({ children, className = '',
   );
 };
 
-export const FloatUp: React.FC<MotionWrapperProps> = ({ children, className = '', delay = 0 }) => {
+export const FloatUp = ({ children, className = '', delay = 0 }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 15 }}

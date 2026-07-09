@@ -8,23 +8,15 @@ import {
   Plus
 } from 'lucide-react';
 
-interface Task {
-  id: string;
-  title: string;
-  category: string;
-  dueDate: string;
-  completed: boolean;
-}
-
 function App() {
-  const [tasks, setTasks] = useState<Task[]>([
+  const [tasks, setTasks] = useState([
     { id: '1', title: 'Request Certified Copies of Death Certificate', category: 'Legal & Certificates', dueDate: 'Due in 3 days', completed: false },
     { id: '2', title: 'Notify Social Security Administration', category: 'Government & Benefits', dueDate: 'Due in 7 days', completed: false },
     { id: '3', title: 'Close Credit Card & Subscription Accounts', category: 'Financial Services', dueDate: 'Completed', completed: true },
     { id: '4', title: 'Initiate Probate & Estate Process', category: 'Estate Planning', dueDate: 'Due in 30 days', completed: false },
   ]);
 
-  const toggleTask = (id: string) => {
+  const toggleTask = (id) => {
     setTasks(tasks.map(task => 
       task.id === id ? { ...task, completed: !task.completed } : task
     ));

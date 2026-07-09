@@ -1,11 +1,7 @@
 import React from 'react';
 import { FadeIn } from './MotionWrappers';
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-export const Layout: React.FC<LayoutProps> = ({ children }) => {
+export const Layout = ({ children }) => {
   return (
     <div className="relative min-h-screen w-full bg-background text-text-muted overflow-hidden flex flex-col font-sans antialiased">
       {/* Ambient Atmospheric Mesh Background */}
