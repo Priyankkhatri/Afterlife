@@ -5,7 +5,7 @@ import { DocumentVaultSnapshot } from './DocumentVaultSnapshot';
 import { QuietProgress } from './QuietProgress';
 import { Heart, HelpCircle, ArrowUpRight } from 'lucide-react';
 
-export const Dashboard = () => {
+export const Dashboard = ({ onReviewAction }) => {
   return (
     <div className="flex flex-col gap-10">
       {/* Ethereal Greeting Header */}
@@ -27,7 +27,7 @@ export const Dashboard = () => {
         
         {/* Bento Cell A: Immediate Focus */}
         <FloatUp delay={0.25} className="lg:col-span-2">
-          <ImmediateFocus onAction={(task) => alert(`Reviewing AI draft for: ${task.title}`)} />
+          <ImmediateFocus onAction={onReviewAction} />
         </FloatUp>
 
         {/* Bento Cell B: Help Guidance Card */}
@@ -45,7 +45,7 @@ export const Dashboard = () => {
             </div>
           </div>
           
-          <button className="mt-6 flex items-center justify-between text-left p-3.5 rounded-2xl bg-background hover:bg-primary/5 border border-[#F0F0F0] hover:border-primary/20 transition-all duration-300 group">
+          <button className="mt-6 flex items-center justify-between text-left p-3.5 rounded-2xl bg-background hover:bg-primary/5 border border-[#F0F0F0] hover:border-primary/20 transition-all duration-300 group cursor-pointer">
             <span className="text-xs font-medium text-text-primary">Draft bank notice letter</span>
             <ArrowUpRight className="w-4 h-4 text-text-muted group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
           </button>

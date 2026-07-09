@@ -4,6 +4,7 @@ import { FloatingDock } from './components/FloatingDock';
 import { Dashboard } from './components/Dashboard';
 import { Vault } from './components/Vault';
 import { ActionRoadmap } from './components/ActionRoadmap';
+import { ReviewDrawer } from './components/ReviewDrawer';
 import { FloatUp } from './components/MotionWrappers';
 import { 
   Mail, 
@@ -12,11 +13,17 @@ import {
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
+  const [activeReviewTask, setActiveReviewTask] = useState(null);
+
+  const handleApprove = (taskId, text) => {
+    alert(`Approved communication draft. The message has been secured and sent successfully.`);
+    setActiveReviewTask(null);
+  };
 
   const renderContent = () => {
     switch (activeTab) {
       case 'home':
-        return <Dashboard />;
+        return <Dashboard onReviewAction={(task) => setActiveReviewTask(task)} />;
       case 'tasks':
         return <ActionRoadmap />;
       case 'vault':
@@ -81,7 +88,7 @@ function App() {
           </div>
         );
       default:
-        return <Dashboard />;
+        return <Dashboard onReviewAction={(task) => setActiveReviewTask(task)} />;
     }
   };
 
@@ -91,6 +98,13 @@ function App() {
         {renderContent()}
       </div>
       <FloatingDock activeTab={activeTab} setActiveTab={setActiveTab} />
+      
+      {/* Global Slide-out Drawer */}
+      <ReviewDrawer 
+        task={activeReviewTask} 
+        onClose={() => setActiveReviewTask(null)} 
+        onApprove={handleApprove} 
+      />
     </Layout>
   );
 }
