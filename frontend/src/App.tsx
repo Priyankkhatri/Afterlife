@@ -18,11 +18,13 @@ import { UrgentTask } from './types';
 import { Vault } from './components/Vault';
 import { LandingPage } from './components/LandingPage';
 import { AuthPage } from './components/AuthPage';
+import { OnboardingFlow } from './components/OnboardingFlow';
 
 function App() {
   const [appLoading, setAppLoading] = useState(true);
   const [showLanding, setShowLanding] = useState(true);
   const [showAuth, setShowAuth] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
   const [activeReviewTask, setActiveReviewTask] = useState<UrgentTask | null>(null);
   const [sanctuaryActive, setSanctuaryActive] = useState(false);
@@ -147,8 +149,16 @@ function App() {
         ) : showAuth ? (
           <AuthPage 
             key="auth" 
-            onSuccess={() => setShowAuth(false)} 
+            onSuccess={() => { setShowAuth(false); setShowOnboarding(true); }} 
             onBack={() => { setShowLanding(true); setShowAuth(false); }} 
+          />
+        ) : showOnboarding ? (
+          <OnboardingFlow 
+            key="onboarding"
+            onComplete={(data) => {
+              showToast(`Sanctuary configured for ${data.decedentName}'s estate.`, 'success');
+              setShowOnboarding(false);
+            }}
           />
         ) : (
           <motion.div
