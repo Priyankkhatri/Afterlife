@@ -5,6 +5,9 @@ import { Dashboard } from './components/Dashboard';
 import { Vault } from './components/Vault';
 import { ActionRoadmap } from './components/ActionRoadmap';
 import { ReviewDrawer } from './components/ReviewDrawer';
+import { SanctuaryModal } from './components/SanctuaryModal';
+import { CustomCursor } from './components/CustomCursor';
+import { Toast } from './components/Toast';
 import { FloatUp } from './components/MotionWrappers';
 import { 
   Mail, 
@@ -14,20 +17,41 @@ import {
 function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [activeReviewTask, setActiveReviewTask] = useState(null);
+  const [sanctuaryActive, setSanctuaryActive] = useState(false);
+  const [toastMessage, setToastMessage] = useState(null);
+
+  const showToast = (message) => {
+    setToastMessage(null); // Clear previous
+    setTimeout(() => {
+      setToastMessage(message);
+    }, 100);
+  };
 
   const handleApprove = (taskId, text) => {
-    alert(`Approved communication draft. The message has been secured and sent successfully.`);
+    showToast("Email draft approved and sent successfully.");
     setActiveReviewTask(null);
   };
 
   const renderContent = () => {
     switch (activeTab) {
       case 'home':
-        return <Dashboard onReviewAction={(task) => setActiveReviewTask(task)} />;
+        return (
+          <Dashboard 
+            onReviewAction={(task) => setActiveReviewTask(task)} 
+          />
+        );
       case 'tasks':
-        return <ActionRoadmap />;
+        return (
+          <ActionRoadmap 
+            showToast={showToast}
+          />
+        );
       case 'vault':
-        return <Vault />;
+        return (
+          <Vault 
+            showToast={showToast}
+          />
+        );
       case 'profile':
         return (
           <div className="flex flex-col gap-10 max-w-2xl">
@@ -88,24 +112,49 @@ function App() {
           </div>
         );
       default:
-        return <Dashboard onReviewAction={(task) => setActiveReviewTask(task)} />;
+        return (
+          <Dashboard 
+            onReviewAction={(task) => setActiveReviewTask(task)} 
+          />
+        );
     }
   };
 
   return (
-    <Layout>
-      <div className="pb-28">
-        {renderContent()}
-      </div>
-      <FloatingDock activeTab={activeTab} setActiveTab={setActiveTab} />
-      
+    <>
+      {/* Custom Trailing Cursor */}
+      <CustomCursor />
+
+      {/* Main Page Layout */}
+      <Layout 
+        onSanctuaryClick={() => setSanctuaryActive(true)} 
+        isSanctuaryActive={sanctuaryActive}
+      >
+        <div className="pb-28">
+          {renderContent()}
+        </div>
+        <FloatingDock activeTab={activeTab} setActiveTab={setActiveTab} />
+      </Layout>
+
       {/* Global Slide-out Drawer */}
       <ReviewDrawer 
         task={activeReviewTask} 
         onClose={() => setActiveReviewTask(null)} 
         onApprove={handleApprove} 
       />
-    </Layout>
+
+      {/* Sanctuary Modal ("Take a Break" breathe mode) */}
+      <SanctuaryModal 
+        isOpen={sanctuaryActive} 
+        onClose={() => setSanctuaryActive(false)} 
+      />
+
+      {/* Global Bubble Toast Notification */}
+      <Toast 
+        message={toastMessage} 
+        onClose={() => setToastMessage(null)} 
+      />
+    </>
   );
 }
 

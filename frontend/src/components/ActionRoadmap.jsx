@@ -4,7 +4,7 @@ import { TaskGroup } from './TaskGroup';
 import { QuietProgress } from './QuietProgress';
 import { Calendar, HelpCircle, ArrowUpRight } from 'lucide-react';
 
-export const ActionRoadmap = () => {
+export const ActionRoadmap = ({ showToast }) => {
   const [tasks, setTasks] = useState([
     // Immediate Attention (Urgent tasks)
     { id: '1', title: 'Request Certified Copies of Death Certificate', description: 'Needed for bank accounts, insurance, and court', category: 'certificates', duration: 'Takes 15 mins', completed: false, group: 'certificates' },
@@ -36,9 +36,18 @@ export const ActionRoadmap = () => {
   };
 
   const toggleTask = (id) => {
-    setTasks(tasks.map(task => 
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ));
+    let completedState = false;
+    const updatedTasks = tasks.map(task => {
+      if (task.id === id) {
+        completedState = !task.completed;
+        return { ...task, completed: completedState };
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
+    if (showToast && completedState) {
+      showToast("Task completed. Administrative relief.");
+    }
   };
 
   const percentComplete = Math.round((tasks.filter(t => t.completed).length / tasks.length) * 100);

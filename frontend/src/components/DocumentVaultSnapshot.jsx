@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FileText } from 'lucide-react';
+import { Skeleton } from './Skeleton';
 
 export const DocumentVaultSnapshot = () => {
   const [loading, setLoading] = useState(true);
@@ -28,12 +29,12 @@ export const DocumentVaultSnapshot = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {loading ? (
-          // Ethereal Skeleton Loaders
+          // Organic Breathing Skeletons
           [1, 2, 3].map((n) => (
-            <div key={n} className="animate-pulse p-5 rounded-2xl bg-background border border-[#F0F0F0] flex flex-col gap-3">
-              <div className="w-8 h-8 rounded-lg bg-secondary/15" />
-              <div className="h-4 bg-secondary/10 rounded w-3/4" />
-              <div className="h-3 bg-secondary/5 rounded w-1/2" />
+            <div key={n} className="p-5 rounded-2xl bg-white border border-[#F0F0F0] flex flex-col gap-4 shadow-sm">
+              <Skeleton className="w-8 h-8 rounded-xl" />
+              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-3 w-1/2" />
             </div>
           ))
         ) : (

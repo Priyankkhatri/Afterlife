@@ -5,7 +5,7 @@ import { DocumentGrid } from './DocumentGrid';
 import { QuietProgress } from './QuietProgress';
 import { ShieldCheck, Search, Info } from 'lucide-react';
 
-export const Vault = () => {
+export const Vault = ({ showToast }) => {
   const [documents, setDocuments] = useState([
     { id: '1', name: 'Certified Death Certificate.pdf', size: '1.2 MB', date: 'Uploaded yesterday', status: 'Analyzed' },
     { id: '2', name: 'MetLife Insurance Policy.pdf', size: '3.4 MB', date: 'Uploaded 2 days ago', status: 'Processing' },
@@ -17,6 +17,9 @@ export const Vault = () => {
 
   const handleUploadComplete = (newDoc) => {
     setDocuments((prev) => [newDoc, ...prev]);
+    if (showToast) {
+      showToast("Document secured and analyzed successfully.");
+    }
   };
 
   const handleView = (doc) => {
@@ -26,6 +29,9 @@ export const Vault = () => {
   const handleArchive = (doc) => {
     if (confirm(`Are you sure you want to archive ${doc.name}?`)) {
       setDocuments((prev) => prev.filter((d) => d.id !== doc.id));
+      if (showToast) {
+        showToast("Document archived successfully.");
+      }
     }
   };
 
