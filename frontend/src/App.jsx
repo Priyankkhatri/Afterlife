@@ -68,7 +68,7 @@ function App() {
                 <div className="grid grid-cols-2 gap-4 text-xs font-sans">
                   <div>
                     <span className="text-text-muted font-light block">Representative</span>
-                    <span className="text-text-primary font-medium mt-0.5 block">Priya Khatri</span>
+                    <span className="text-text-primary font-medium mt-0.5 block">Priyank Khatri</span>
                   </div>
                   <div>
                     <span className="text-text-muted font-light block">Estate Status</span>

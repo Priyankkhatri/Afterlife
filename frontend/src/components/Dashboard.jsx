@@ -15,7 +15,7 @@ export const Dashboard = ({ onReviewAction }) => {
           <span className="text-[10px] uppercase tracking-widest font-semibold font-sans">Empathetic Companion</span>
         </div>
         <h1 className="text-4xl md:text-5xl font-serif text-text-primary mt-1">
-          Good afternoon, Priya. There is no rush today.
+          Good afternoon, Priyank. There is no rush today.
         </h1>
         <p className="text-sm text-text-muted font-light font-sans max-w-lg mt-1">
           We have organized your estate paperwork. Take a look at your focus items whenever you feel ready.
@@ -24,7 +24,7 @@ export const Dashboard = ({ onReviewAction }) => {
 
       {/* Weightless Bento Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         {/* Bento Cell A: Immediate Focus */}
         <FloatUp delay={0.25} className="lg:col-span-2">
           <ImmediateFocus onAction={onReviewAction} />
@@ -44,7 +44,7 @@ export const Dashboard = ({ onReviewAction }) => {
               </p>
             </div>
           </div>
-          
+
           <button className="mt-6 flex items-center justify-between text-left p-3.5 rounded-2xl bg-background hover:bg-accent-warm/5 border border-[#F0F0F0] hover:border-accent-warm/20 transition-all duration-300 group cursor-pointer">
             <span className="text-xs font-medium text-text-primary">Draft bank notice letter</span>
             <ArrowUpRight className="w-4 h-4 text-text-muted group-hover:text-accent-warm group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />

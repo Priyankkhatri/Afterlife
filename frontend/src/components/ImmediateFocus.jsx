@@ -12,9 +12,9 @@ export const ImmediateFocus = ({ onAction }) => {
       variables: [
         { key: 'policy', label: 'Policy Number', value: 'MetLife #98221-A' },
         { key: 'deceased', label: 'Deceased Name', value: 'Ramesh Chandra Khatri' },
-        { key: 'beneficiary', label: 'Beneficiary', value: 'Priya Khatri' }
+        { key: 'beneficiary', label: 'Beneficiary', value: 'Priyank Khatri' }
       ],
-      defaultDraft: `Subject: Claim Notification - Policy #98221-A\n\nDear MetLife Claims Department,\n\nI am writing to formally notify you of the passing of the policyholder, Ramesh Chandra Khatri, on June 28, 2026. As the designated beneficiary, I request the claims start package and details on necessary estate documentation.\n\nThank you for your guidance.\n\nSincerely,\nPriya Khatri\nClaimant`
+      defaultDraft: `Subject: Claim Notification - Policy #98221-A\n\nDear MetLife Claims Department,\n\nI am writing to formally notify you of the passing of the policyholder, Ramesh Chandra Khatri, on June 28, 2026. As the designated beneficiary, I request the claims start package and details on necessary estate documentation.\n\nThank you for your guidance.\n\nSincerely,\nPriyank Khatri\nClaimant`
     },
     { 
       id: 'focus-2', 
@@ -23,11 +23,11 @@ export const ImmediateFocus = ({ onAction }) => {
       time: 'Due in 5 days',
       documentName: 'HR_Leave_Policy.pdf',
       variables: [
-        { key: 'employee', label: 'Employee Name', value: 'Priya Khatri' },
+        { key: 'employee', label: 'Employee Name', value: 'Priyank Khatri' },
         { key: 'manager', label: 'Manager Name', value: 'Sarah Chen' },
         { key: 'duration', label: 'Leave Duration', value: '5 Days (Bereavement)' }
       ],
-      defaultDraft: `Dear HR Team & Sarah,\n\nI am writing to request bereavement leave following the passing of my father, Ramesh Chandra Khatri. As per company policy, I would like to request 5 days of paid funeral leave starting next Monday. I have attached the certificate draft for verification.\n\nBest regards,\nPriya Khatri\nSoftware Engineer`
+      defaultDraft: `Dear HR Team & Sarah,\n\nI am writing to request bereavement leave following the passing of my father, Ramesh Chandra Khatri. As per company policy, I would like to request 5 days of paid funeral leave starting next Monday. I have attached the certificate draft for verification.\n\nBest regards,\nPriyank Khatri\nSoftware Engineer`
     },
   ];
 

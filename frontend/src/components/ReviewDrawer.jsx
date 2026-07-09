@@ -12,7 +12,7 @@ export const ReviewDrawer = ({ task, onClose, onApprove }) => {
     if (task) {
       setDraftText(
         task.defaultDraft || 
-        `Subject: Request for Account Closure - Ramesh Chandra Khatri\n\nDear Support Team,\n\nI am writing as the legal representative of the estate of Ramesh Chandra Khatri to request the closure of the savings account holding reference #98221-A. We request that all remaining balances be liquidated and disbursed to the estate.\n\nThank you for your assistance during this transition.\n\nSincerely,\nPriya Khatri\nExecutor`
+        `Subject: Request for Account Closure - Ramesh Chandra Khatri\n\nDear Support Team,\n\nI am writing as the legal representative of the estate of Ramesh Chandra Khatri to request the closure of the savings account holding reference #98221-A. We request that all remaining balances be liquidated and disbursed to the estate.\n\nThank you for your assistance during this transition.\n\nSincerely,\nPriyank Khatri\nExecutor`
       );
     }
   }, [task]);
@@ -31,7 +31,7 @@ export const ReviewDrawer = ({ task, onClose, onApprove }) => {
   const variables = task.variables || [
     { key: 'account', label: 'Account Number', value: 'Savings #98221-A' },
     { key: 'deceased', label: 'Deceased Name', value: 'Ramesh Chandra Khatri' },
-    { key: 'executor', label: 'Executor', value: 'Priya Khatri' },
+    { key: 'executor', label: 'Executor', value: 'Priyank Khatri' },
   ];
 
   return (

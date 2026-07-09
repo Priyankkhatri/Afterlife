@@ -29,7 +29,7 @@ export const ComparisonView = ({ draftText, setDraftText, variables, documentNam
             </div>
             <div>
               <span className="font-medium text-text-primary block">Primary Executor Contact</span>
-              <span>Priya Khatri (Representative)</span>
+              <span>Priyank Khatri (Representative)</span>
             </div>
             <div>
               <span className="font-medium text-text-primary block">Account Reference Identifiers</span>
