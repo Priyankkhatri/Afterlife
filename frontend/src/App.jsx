@@ -2,12 +2,11 @@ import { useState } from 'react';
 import { Layout } from './components/Layout';
 import { FloatingDock } from './components/FloatingDock';
 import { Dashboard } from './components/Dashboard';
+import { Vault } from './components/Vault';
 import { FloatUp } from './components/MotionWrappers';
 import { 
   Clock, 
   Plus, 
-  Upload, 
-  Search, 
   Mail, 
   Phone 
 } from 'lucide-react';
@@ -91,61 +90,7 @@ function App() {
           </div>
         );
       case 'vault':
-        return (
-          <div className="flex flex-col gap-10">
-            <FloatUp delay={0.1} className="border-b border-[#F0F0F0] pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div>
-                <h1 className="text-4xl font-serif text-text-primary">Document Vault</h1>
-                <p className="text-sm text-text-muted font-light mt-1">
-                  Secure storage for certificates, policies, and letters. Fully encrypted and private.
-                </p>
-              </div>
-              <button className="flex items-center gap-2 px-5 py-2.5 text-xs font-medium text-white bg-primary hover:bg-primary-hover rounded-full transition-colors w-fit">
-                <Upload className="w-4 h-4" /> Upload Document
-              </button>
-            </FloatUp>
-
-            <FloatUp delay={0.2} className="relative max-w-md">
-              <input 
-                type="text" 
-                placeholder="Search documents..." 
-                className="w-full bg-white border border-[#F0F0F0] rounded-full pl-12 pr-6 py-3 text-sm focus:outline-none focus:border-primary/50 text-text-primary shadow-sm"
-              />
-              <Search className="absolute left-4 top-3.5 w-4 h-4 text-text-muted" />
-            </FloatUp>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
-              <FloatUp delay={0.3} className="bg-white p-6 rounded-3xl border border-[#F0F0F0] shadow-antigravity flex items-center justify-between">
-                <div>
-                  <h3 className="font-sans font-medium text-text-primary">Certified Death Certificate.pdf</h3>
-                  <p className="text-xs text-text-muted font-light mt-1">1.2 MB • Yesterday</p>
-                </div>
-                <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded text-primary bg-primary/10">Verified</span>
-              </FloatUp>
-              <FloatUp delay={0.35} className="bg-white p-6 rounded-3xl border border-[#F0F0F0] shadow-antigravity flex items-center justify-between">
-                <div>
-                  <h3 className="font-sans font-medium text-text-primary">MetLife Insurance Policy.pdf</h3>
-                  <p className="text-xs text-text-muted font-light mt-1">3.4 MB • 2 days ago</p>
-                </div>
-                <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded text-secondary bg-secondary/10">Processing</span>
-              </FloatUp>
-              <FloatUp delay={0.4} className="bg-white p-6 rounded-3xl border border-[#F0F0F0] shadow-antigravity flex items-center justify-between">
-                <div>
-                  <h3 className="font-sans font-medium text-text-primary">Final Will & Testament.pdf</h3>
-                  <p className="text-xs text-text-muted font-light mt-1">4.8 MB • 3 days ago</p>
-                </div>
-                <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded text-primary bg-primary/10">Verified</span>
-              </FloatUp>
-              <FloatUp delay={0.45} className="bg-white p-6 rounded-3xl border border-[#F0F0F0] shadow-antigravity flex items-center justify-between">
-                <div>
-                  <h3 className="font-sans font-medium text-text-primary">Comcast Account Closure Notice.pdf</h3>
-                  <p className="text-xs text-text-muted font-light mt-1">720 KB • 5 days ago</p>
-                </div>
-                <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded text-primary bg-primary/10">Verified</span>
-              </FloatUp>
-            </div>
-          </div>
-        );
+        return <Vault />;
       case 'profile':
         return (
           <div className="flex flex-col gap-10 max-w-2xl">
