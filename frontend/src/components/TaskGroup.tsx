@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Folder } from 'lucide-react';
 import { TaskRow } from './TaskRow';
+import { Task, GroupItem } from '../types';
 
-export const TaskGroup = ({ group, tasks, onToggle }) => {
+interface TaskGroupProps {
+  group: GroupItem;
+  tasks: Task[];
+  onToggle: (id: string) => void;
+}
+
+export const TaskGroup: React.FC<TaskGroupProps> = ({ group, tasks, onToggle }) => {
   const [isOpen, setIsOpen] = useState(group.defaultOpen || false);
 
   return (
@@ -11,7 +18,7 @@ export const TaskGroup = ({ group, tasks, onToggle }) => {
       {/* Group Accordion Header */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full p-4 rounded-2xl bg-white hover:bg-background/40 border border-[#F0F0F0] shadow-sm transition-all focus:outline-none cursor-pointer"
+        className="flex items-center justify-between w-full p-4 rounded-2xl bg-surface hover:bg-background/40 border border-border-light shadow-sm transition-all focus:outline-none focus-ring cursor-pointer"
         aria-expanded={isOpen}
       >
         <div className="flex items-center gap-3.5 text-left">
@@ -48,7 +55,7 @@ export const TaskGroup = ({ group, tasks, onToggle }) => {
             className="overflow-hidden"
           >
             {/* Visual Timeline Connector Line linking items */}
-            <div className="relative pl-6 ml-6 border-l border-[#F0F0F0] flex flex-col gap-3.5 py-1">
+            <div className="relative pl-6 ml-6 border-l border-border-light flex flex-col gap-3.5 py-1">
               {tasks.map((task) => (
                 <TaskRow 
                   key={task.id} 

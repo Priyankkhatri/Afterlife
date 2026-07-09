@@ -3,8 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sparkles } from 'lucide-react';
 import { ComparisonView } from './ComparisonView';
 import { ApprovalControls } from './ApprovalControls';
+import { UrgentTask, Variable } from '../types';
 
-export const ReviewDrawer = ({ task, onClose, onApprove }) => {
+interface ReviewDrawerProps {
+  task: UrgentTask | null;
+  onClose: () => void;
+  onApprove: (taskId: string, text: string) => void;
+}
+
+export const ReviewDrawer: React.FC<ReviewDrawerProps> = ({ task, onClose, onApprove }) => {
   const [draftText, setDraftText] = useState('');
 
   // Update draft whenever task changes
@@ -19,7 +26,7 @@ export const ReviewDrawer = ({ task, onClose, onApprove }) => {
 
   // Esc key binding to close
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -28,7 +35,7 @@ export const ReviewDrawer = ({ task, onClose, onApprove }) => {
 
   if (!task) return null;
 
-  const variables = task.variables || [
+  const variables: Variable[] = task.variables || [
     { key: 'account', label: 'Account Number', value: 'Savings #98221-A' },
     { key: 'deceased', label: 'Deceased Name', value: 'Ramesh Chandra Khatri' },
     { key: 'executor', label: 'Executor', value: 'Priyank Khatri' },
@@ -36,14 +43,14 @@ export const ReviewDrawer = ({ task, onClose, onApprove }) => {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex justify-end">
+      <div className="fixed inset-0 z-55 flex justify-end">
         {/* Blurred Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-text-primary/10 backdrop-blur-sm"
+          className="fixed inset-0 bg-text-primary/10 dark:bg-black/40 backdrop-blur-sm"
         />
 
         {/* Slide-out Panel */}
@@ -52,10 +59,10 @@ export const ReviewDrawer = ({ task, onClose, onApprove }) => {
           animate={{ x: 0 }}
           exit={{ x: '100%' }}
           transition={{ type: 'spring', stiffness: 220, damping: 28 }}
-          className="relative w-full max-w-4xl h-full bg-white shadow-2xl flex flex-col justify-between p-8 md:p-10 z-10 overflow-y-auto"
+          className="relative w-full max-w-4xl h-full bg-surface shadow-2xl flex flex-col justify-between p-8 md:p-10 z-10 overflow-y-auto"
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-[#F0F0F0] pb-6 mb-6">
+          <div className="flex items-center justify-between border-b border-border-light pb-6 mb-6">
             <div className="flex items-center gap-2.5">
               <div className="p-2.5 rounded-full bg-primary/10 text-primary">
                 <Sparkles className="w-5 h-5 fill-primary/10" />
@@ -67,7 +74,7 @@ export const ReviewDrawer = ({ task, onClose, onApprove }) => {
             </div>
             <button
               onClick={onClose}
-              className="p-2 rounded-full hover:bg-background text-text-muted hover:text-text-primary transition-all cursor-pointer focus:outline-none"
+              className="p-2 rounded-full hover:bg-background text-text-muted hover:text-text-primary transition-all cursor-pointer focus:outline-none focus-ring"
               aria-label="Close review panel"
             >
               <X className="w-5 h-5" />
@@ -75,7 +82,7 @@ export const ReviewDrawer = ({ task, onClose, onApprove }) => {
           </div>
 
           {/* Comparison View Grid */}
-          <div className="flex-1">
+          <div className="flex-1 mb-6">
             <ComparisonView
               draftText={draftText}
               setDraftText={setDraftText}
@@ -92,7 +99,6 @@ export const ReviewDrawer = ({ task, onClose, onApprove }) => {
             }}
             onRegenerate={() => {
               setDraftText(task.defaultDraft || draftText);
-              alert('Draft regenerated back to original AI template.');
             }}
             onCancel={onClose}
           />

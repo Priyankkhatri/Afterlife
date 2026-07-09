@@ -1,8 +1,15 @@
 import React from 'react';
 import { Sparkles } from 'lucide-react';
+import { Card } from './ui/Card';
+import { Button } from './ui/Button';
+import { UrgentTask } from '../types';
 
-export const ImmediateFocus = ({ onAction }) => {
-  const urgentTasks = [
+interface ImmediateFocusProps {
+  onAction: (task: UrgentTask) => void;
+}
+
+export const ImmediateFocus: React.FC<ImmediateFocusProps> = ({ onAction }) => {
+  const urgentTasks: UrgentTask[] = [
     { 
       id: 'focus-1', 
       title: 'Notify Life Insurance Provider', 
@@ -32,10 +39,10 @@ export const ImmediateFocus = ({ onAction }) => {
   ];
 
   return (
-    <div className="bg-white rounded-3xl p-8 shadow-antigravity border border-[#F0F0F0] flex flex-col gap-6">
+    <Card className="flex flex-col gap-6" animateHover>
       <div className="flex items-center justify-between">
         <h3 className="font-serif text-2xl text-text-primary">Immediate Focus</h3>
-        <span className="text-[10px] uppercase tracking-widest font-semibold text-accent-warm px-2.5 py-1 rounded-full bg-accent-warm/10">
+        <span className="text-[10px] uppercase tracking-widest font-semibold text-accent-warm px-2.5 py-1 rounded-full bg-accent-warm/10 select-none">
           Priority
         </span>
       </div>
@@ -47,16 +54,17 @@ export const ImmediateFocus = ({ onAction }) => {
               <h4 className="font-sans font-medium text-text-primary text-base mb-1">{task.title}</h4>
               <p className="font-sans text-xs text-text-muted font-light">{task.description} • {task.time}</p>
             </div>
-            <button
+            <Button
               onClick={() => onAction && onAction(task)}
-              className="self-start md:self-auto flex items-center gap-2 px-4 py-2 text-xs font-medium text-accent-warm bg-accent-warm/5 hover:bg-accent-warm/10 rounded-full border border-accent-warm/10 transition-colors cursor-pointer"
+              variant="secondary"
+              className="self-start md:self-auto"
             >
               <Sparkles className="w-3.5 h-3.5" />
               Review AI Draft
-            </button>
+            </Button>
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   );
 };

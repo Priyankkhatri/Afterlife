@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Compass, X } from 'lucide-react';
 import { motion as m, AnimatePresence as Ap } from 'framer-motion';
+import { Card } from './ui/Card';
 
 const quotes = [
   "Take all the time you need. There is no timeline for grief.",
@@ -9,10 +10,12 @@ const quotes = [
   "Breathing in, I calm my body. Breathing out, I release administrative strain."
 ];
 
-export const BreathingCard = () => {
+type BreathPhase = 'Inhale' | 'Hold' | 'Exhale' | 'Rest';
+
+export const BreathingCard: React.FC = () => {
   const [quoteIdx, setQuoteIdx] = useState(0);
   const [isExercising, setIsExercising] = useState(false);
-  const [breathPhase, setBreathPhase] = useState('Inhale'); // Inhale, Hold, Exhale, Rest
+  const [breathPhase, setBreathPhase] = useState<BreathPhase>('Inhale');
 
   useEffect(() => {
     const quoteInterval = setInterval(() => {
@@ -24,7 +27,7 @@ export const BreathingCard = () => {
   useEffect(() => {
     if (!isExercising) return;
     
-    let timer;
+    let timer: any;
     const cycle = () => {
       setBreathPhase('Inhale');
       timer = setTimeout(() => {
@@ -45,7 +48,7 @@ export const BreathingCard = () => {
   }, [isExercising]);
 
   return (
-    <div className="bg-white rounded-3xl p-8 shadow-antigravity border border-[#F0F0F0] relative overflow-hidden flex flex-col justify-between min-h-[220px] transition-shadow duration-300 select-none">
+    <Card className="relative overflow-hidden flex flex-col justify-between min-h-[220px] transition-shadow duration-300 select-none h-full">
       {/* Decorative Warm Ambient Backglow */}
       <div className="absolute -top-12 -right-12 w-24 h-24 rounded-full bg-accent-warm/5 blur-xl pointer-events-none" />
 
@@ -56,7 +59,7 @@ export const BreathingCard = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex flex-col justify-between flex-1 animate-fade-in"
+            className="flex flex-col justify-between flex-1"
           >
             <div className="flex flex-col gap-4">
               <div className="p-3 rounded-full bg-accent-warm/10 text-accent-warm w-fit">
@@ -72,7 +75,7 @@ export const BreathingCard = () => {
 
             <button
               onClick={() => setIsExercising(true)}
-              className="mt-6 flex items-center justify-between text-left p-3.5 rounded-2xl bg-[#FAFAFA] hover:bg-accent-warm/5 border border-[#F0F0F0] hover:border-accent-warm/20 transition-all duration-300 group cursor-pointer focus:outline-none"
+              className="mt-6 flex items-center justify-between text-left p-3.5 rounded-2xl bg-background hover:bg-accent-warm/5 border border-border-light hover:border-accent-warm/20 transition-all duration-300 group cursor-pointer focus:outline-none focus-ring"
             >
               <span className="text-xs font-semibold text-text-primary font-sans">Breathe with Me</span>
               <span className="text-[10px] text-accent-warm uppercase tracking-widest font-semibold group-hover:translate-x-0.5 transition-transform">Start Box Breathing →</span>
@@ -88,7 +91,8 @@ export const BreathingCard = () => {
           >
             <button
               onClick={() => setIsExercising(false)}
-              className="absolute top-4 right-4 p-1.5 text-text-muted hover:text-text-primary rounded-full hover:bg-background transition-colors cursor-pointer focus:outline-none"
+              className="absolute top-4 right-4 p-1.5 text-text-muted hover:text-text-primary rounded-full hover:bg-background transition-colors cursor-pointer focus:outline-none focus-ring"
+              aria-label="Stop breathing exercise"
             >
               <X className="w-4 h-4" />
             </button>
@@ -97,14 +101,14 @@ export const BreathingCard = () => {
             <div className="relative w-28 h-28 flex items-center justify-center mb-4">
               <m.div
                 animate={{
-                  scale: breathPhase === 'Inhale' ? 1.4 : breathPhase === 'Hold' ? 1.4 : breathPhase === 'Exhale' ? 1.0 : 1.0
+                  scale: breathPhase === 'Inhale' || breathPhase === 'Hold' ? 1.4 : 1.0
                 }}
                 transition={{ duration: 4.0, ease: 'easeInOut' }}
                 className="absolute w-20 h-20 rounded-full bg-accent-warm/15 border border-accent-warm/20"
               />
               <m.div
                 animate={{
-                  scale: breathPhase === 'Inhale' ? 1.2 : breathPhase === 'Hold' ? 1.2 : breathPhase === 'Exhale' ? 1.0 : 1.0
+                  scale: breathPhase === 'Inhale' || breathPhase === 'Hold' ? 1.2 : 1.0
                 }}
                 transition={{ duration: 4.0, ease: 'easeInOut' }}
                 className="absolute w-16 h-16 rounded-full bg-accent-warm/10"
@@ -124,6 +128,6 @@ export const BreathingCard = () => {
           </m.div>
         )}
       </Ap>
-    </div>
+    </Card>
   );
 };

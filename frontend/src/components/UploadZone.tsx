@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UploadCloud, Sparkles } from 'lucide-react';
+import { Document } from '../types';
 
-export const UploadZone = ({ onUploadComplete }) => {
+interface UploadZoneProps {
+  onUploadComplete: (doc: Document) => void;
+}
+
+export const UploadZone: React.FC<UploadZoneProps> = ({ onUploadComplete }) => {
   const [isDragActive, setIsDragActive] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleDrag = (e) => {
+  const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (e.type === 'dragenter' || e.type === 'dragover') {
@@ -17,7 +23,7 @@ export const UploadZone = ({ onUploadComplete }) => {
     }
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragActive(false);
@@ -27,14 +33,14 @@ export const UploadZone = ({ onUploadComplete }) => {
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
       simulateUpload(e.target.files[0]);
     }
   };
 
-  const simulateUpload = (file) => {
+  const simulateUpload = (file: File) => {
     setUploading(true);
     setProgress(0);
     
@@ -61,6 +67,19 @@ export const UploadZone = ({ onUploadComplete }) => {
     }, 200);
   };
 
+  const triggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      triggerFileInput();
+    }
+  };
+
   return (
     <div className="w-full flex flex-col gap-6">
       <motion.div
@@ -68,23 +87,29 @@ export const UploadZone = ({ onUploadComplete }) => {
         onDragOver={handleDrag}
         onDragLeave={handleDrag}
         onDrop={handleDrop}
+        onClick={triggerFileInput}
+        onKeyDown={handleKeyDown}
+        tabIndex={uploading ? -1 : 0}
+        role="button"
+        aria-label="Upload document area. Press Enter or Space to select a file."
         whileHover={{ scale: 1.01 }}
         animate={{
-          borderColor: isDragActive ? '#E29A76' : '#A6B4C4',
-          backgroundColor: isDragActive ? 'rgba(226, 154, 118, 0.02)' : 'rgba(255, 255, 255, 0.4)'
+          borderColor: isDragActive ? '#E29A76' : 'var(--border-light)',
+          backgroundColor: isDragActive ? 'rgba(226, 154, 118, 0.02)' : 'var(--surface)'
         }}
         transition={{ duration: 0.3 }}
-        className="relative w-full rounded-3xl border-2 border-dashed p-10 md:p-14 flex flex-col items-center justify-center text-center cursor-pointer bg-gradient-to-b from-white to-transparent shadow-sm hover:shadow-antigravity"
+        className="relative w-full rounded-3xl border-2 border-dashed p-10 md:p-14 flex flex-col items-center justify-center text-center cursor-pointer shadow-sm hover:shadow-antigravity focus-ring outline-none"
       >
         <input 
           type="file" 
           id="file-upload" 
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+          ref={fileInputRef}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer hidden" 
           onChange={handleChange}
           disabled={uploading}
         />
         
-        <div className="flex flex-col items-center gap-4 max-w-md">
+        <div className="flex flex-col items-center gap-4 max-w-md select-none pointer-events-none">
           <motion.div 
             animate={{ y: isDragActive ? -4 : 0 }}
             className="p-4 rounded-full bg-secondary/5 text-secondary-hover"
@@ -108,7 +133,7 @@ export const UploadZone = ({ onUploadComplete }) => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="w-full flex flex-col gap-2 p-4 bg-white rounded-2xl border border-[#F0F0F0] shadow-antigravity"
+            className="w-full flex flex-col gap-2 p-4 bg-surface rounded-2xl border border-border-light shadow-antigravity select-none"
           >
             <div className="flex items-center justify-between text-xs font-sans font-light text-text-muted">
               <span className="animate-pulse flex items-center gap-1.5">
@@ -118,7 +143,7 @@ export const UploadZone = ({ onUploadComplete }) => {
               <span className="font-medium text-text-primary">{progress}%</span>
             </div>
             
-            <div className="w-full h-[2px] bg-[#F0F0F0] rounded-full overflow-hidden">
+            <div className="w-full h-[2px] bg-border-light rounded-full overflow-hidden">
               <motion.div
                 className="h-full bg-accent-warm"
                 initial={{ width: '0%' }}

@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { FadeIn, FloatUp } from './MotionWrappers';
 import { UploadZone } from './UploadZone';
 import { DocumentGrid } from './DocumentGrid';
 import { QuietProgress } from './QuietProgress';
 import { ShieldCheck, Search, Info } from 'lucide-react';
+import { Card } from './ui/Card';
+import { EmptyState } from './EmptyState';
+import { Document } from '../types';
 
-export const Vault = ({ showToast }) => {
-  const [documents, setDocuments] = useState([
+interface VaultProps {
+  showToast: (message: string) => void;
+}
+
+export const Vault: React.FC<VaultProps> = ({ showToast }) => {
+  const [documents, setDocuments] = useState<Document[]>([
     { id: '1', name: 'Certified Death Certificate.pdf', size: '1.2 MB', date: 'Uploaded yesterday', status: 'Analyzed' },
     { id: '2', name: 'MetLife Insurance Policy.pdf', size: '3.4 MB', date: 'Uploaded 2 days ago', status: 'Processing' },
     { id: '3', name: 'Final Will & Testament.pdf', size: '4.8 MB', date: 'Uploaded 3 days ago', status: 'Analyzed' },
@@ -14,19 +21,28 @@ export const Vault = ({ showToast }) => {
   ]);
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useState('');
 
-  const handleUploadComplete = (newDoc) => {
+  // Performance: Debounce search query to optimize filtering on large lists
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+    }, 180);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
+
+  const handleUploadComplete = (newDoc: Document) => {
     setDocuments((prev) => [newDoc, ...prev]);
     if (showToast) {
       showToast("Document secured and analyzed successfully.");
     }
   };
 
-  const handleView = (doc) => {
-    alert(`Viewing document: ${doc.name}`);
+  const handleView = (doc: Document) => {
+    showToast(`Opening secure viewer for: ${doc.name}`);
   };
 
-  const handleArchive = (doc) => {
+  const handleArchive = (doc: Document) => {
     if (confirm(`Are you sure you want to archive ${doc.name}?`)) {
       setDocuments((prev) => prev.filter((d) => d.id !== doc.id));
       if (showToast) {
@@ -35,18 +51,22 @@ export const Vault = ({ showToast }) => {
     }
   };
 
-  const filteredDocs = documents.filter((doc) => 
-    doc.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Performance: Memoize filtered documents list
+  const filteredDocs = useMemo(() => {
+    return documents.filter((doc) => 
+      doc.name.toLowerCase().includes(debouncedQuery.toLowerCase())
+    );
+  }, [documents, debouncedQuery]);
 
-  const percentAnalyzed = documents.length > 0 
-    ? Math.round((documents.filter(d => d.status === 'Analyzed').length / documents.length) * 100) 
-    : 0;
+  const percentAnalyzed = useMemo(() => {
+    if (documents.length === 0) return 0;
+    return Math.round((documents.filter(d => d.status === 'Analyzed' || d.status === 'Verified').length / documents.length) * 100);
+  }, [documents]);
 
   return (
     <div className="flex flex-col gap-10">
       {/* Header */}
-      <FadeIn delay={0.1} className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[#F0F0F0] pb-8">
+      <FadeIn delay={0.1} className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border-light pb-8">
         <div>
           <div className="flex items-center gap-2 text-accent-warm mb-2">
             <ShieldCheck className="w-5 h-5 fill-accent-warm/10" />
@@ -57,7 +77,7 @@ export const Vault = ({ showToast }) => {
             Store, analyze, and retrieve transition paperwork in an encrypted environment.
           </p>
         </div>
-        <div className="flex items-center gap-2 text-xs font-sans text-accent-warm bg-accent-warm/5 border border-accent-warm/15 rounded-2xl px-4 py-3 max-w-xs">
+        <div className="flex items-center gap-2 text-xs font-sans text-accent-warm bg-accent-warm/5 border border-accent-warm/15 rounded-2xl px-4 py-3 max-w-xs select-none">
           <Info className="w-4 h-4 shrink-0" />
           <span className="font-light leading-relaxed">All documents are stored with end-to-end encryption.</span>
         </div>
@@ -73,9 +93,11 @@ export const Vault = ({ showToast }) => {
             <UploadZone onUploadComplete={handleUploadComplete} />
           </FloatUp>
 
-          <FloatUp delay={0.3} className="bg-white p-6 rounded-3xl border border-[#F0F0F0] shadow-antigravity flex flex-col gap-4">
-            <h3 className="font-serif text-lg text-text-primary">Vault Integrity</h3>
-            <QuietProgress percent={percentAnalyzed} />
+          <FloatUp delay={0.3}>
+            <Card className="flex flex-col gap-4" animateHover>
+              <h3 className="font-serif text-lg text-text-primary">Vault Integrity</h3>
+              <QuietProgress percent={percentAnalyzed} />
+            </Card>
           </FloatUp>
         </div>
 
@@ -90,7 +112,8 @@ export const Vault = ({ showToast }) => {
                 placeholder="Search documents..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white border border-[#F0F0F0] rounded-full pl-10 pr-4 py-2.5 text-xs focus:outline-none focus:border-primary/50 text-text-primary shadow-sm"
+                className="w-full bg-surface border border-border-light rounded-full pl-10 pr-4 py-2.5 text-xs focus:outline-none focus-ring text-text-primary shadow-sm"
+                aria-label="Search documents by name"
               />
               <Search className="absolute left-3.5 top-3 w-3.5 h-3.5 text-text-muted" />
             </div>
@@ -103,8 +126,12 @@ export const Vault = ({ showToast }) => {
               onArchive={handleArchive} 
             />
           ) : (
-            <FloatUp delay={0.3} className="text-center py-16 bg-white rounded-3xl border border-[#F0F0F0] shadow-antigravity">
-              <p className="text-sm text-text-muted font-light font-sans">No documents found matching your search.</p>
+            <FloatUp delay={0.3} className="py-6">
+              <EmptyState 
+                icon={Search}
+                title="No documents found"
+                description="We couldn't find any documents matching your search term. Try searching for a different keyword or file format."
+              />
             </FloatUp>
           )}
         </div>

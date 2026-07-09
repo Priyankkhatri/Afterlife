@@ -2,9 +2,32 @@
 
 @import "tailwindcss";
 
+/* Class-based Dark Mode custom variant for Tailwind CSS v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #FAFAFA;
+  --surface: #FFFFFF;
+  --text-primary: #2A2F35;
+  --text-muted: #6B7280;
+  --border-light: #F0F0F0;
+  --shadow-val-antigravity: 0 10px 40px -10px rgba(0, 0, 0, 0.03);
+  --shadow-val-antigravity-hover: 0 20px 50px -12px rgba(0, 0, 0, 0.05);
+}
+
+.dark {
+  --background: #0D0F11;
+  --surface: #14171A;
+  --text-primary: #ECEFF1;
+  --text-muted: #8A97A3;
+  --border-light: #202429;
+  --shadow-val-antigravity: 0 10px 40px -10px rgba(0, 0, 0, 0.25);
+  --shadow-val-antigravity-hover: 0 20px 50px -12px rgba(0, 0, 0, 0.35);
+}
+
 @theme {
-  --color-background: #FAFAFA;
-  --color-surface: #FFFFFF;
+  --color-background: var(--background);
+  --color-surface: var(--surface);
   
   --color-primary: #8CA596;
   --color-primary-hover: #7A9384;
@@ -15,34 +38,35 @@
   --color-accent-warm: #E29A76;
   --color-accent-warm-hover: #D18965;
   
-  --color-text-primary: #2A2F35;
-  --color-text-muted: #6B7280;
+  --color-text-primary: var(--text-primary);
+  --color-text-muted: var(--text-muted);
   
-  --color-border-light: #F0F0F0;
+  --color-border-light: var(--border-light);
 
   --font-serif: "Instrument Serif", "Playfair Display", serif;
   --font-sans: "Inter", "Geist", sans-serif;
 
-  --shadow-antigravity: 0 10px 40px -10px rgba(0, 0, 0, 0.03);
-  --shadow-antigravity-hover: 0 20px 50px -12px rgba(0, 0, 0, 0.05);
+  --shadow-antigravity: var(--shadow-val-antigravity);
+  --shadow-antigravity-hover: var(--shadow-val-antigravity-hover);
 }
 
 @layer base {
   html, body {
-    background-color: #FAFAFA;
+    background-color: var(--background);
     font-family: 'Inter', sans-serif;
-    color: #6B7280;
+    color: var(--text-muted);
     margin: 0;
     padding: 0;
     overflow-x: hidden;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Instrument Serif', serif;
-    color: #2A2F35;
+    color: var(--text-primary);
     font-weight: 500;
   }
 }
@@ -54,3 +78,44 @@
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(240, 240, 240, 0.8);
 }
+
+.dark .glass-panel {
+  background: rgba(20, 23, 26, 0.7);
+  border: 1px solid rgba(32, 36, 41, 0.8);
+}
+
+/* Custom shimmer pulse keyframes for upgraded skeleton loading */
+@keyframes shimmer-sweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-bg {
+  background: linear-gradient(90deg, 
+    rgba(140, 165, 150, 0.05) 25%, 
+    rgba(140, 165, 150, 0.15) 50%, 
+    rgba(140, 165, 150, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-sweep 2.5s infinite linear;
+}
+
+.dark .shimmer-bg {
+  background: linear-gradient(90deg, 
+    rgba(32, 36, 41, 0.6) 25%, 
+    rgba(45, 52, 60, 0.8) 50%, 
+    rgba(32, 36, 41, 0.6) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-sweep 2.5s infinite linear;
+}
+
+/* Accessibility Focus Ring styling */
+.focus-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+}
+

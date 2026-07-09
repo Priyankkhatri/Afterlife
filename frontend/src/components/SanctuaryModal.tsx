@@ -1,7 +1,13 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from './ui/Button';
 
-export const SanctuaryModal = ({ isOpen, onClose }) => {
+interface SanctuaryModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const SanctuaryModal: React.FC<SanctuaryModalProps> = ({ isOpen, onClose }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -9,7 +15,7 @@ export const SanctuaryModal = ({ isOpen, onClose }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/80 backdrop-blur-xl p-8 text-center select-none"
+          className="fixed inset-0 z-999 flex flex-col items-center justify-center bg-background/90 dark:bg-black/90 backdrop-blur-xl p-8 text-center select-none"
         >
           {/* Centered breathing circle animation */}
           <div className="relative flex items-center justify-center mb-10 w-64 h-64">
@@ -40,7 +46,7 @@ export const SanctuaryModal = ({ isOpen, onClose }) => {
             />
             
             {/* Innermost soft node */}
-            <div className="w-24 h-24 rounded-full bg-white shadow-antigravity flex items-center justify-center z-10 border border-[#F0F0F0]">
+            <div className="w-24 h-24 rounded-full bg-surface shadow-antigravity flex items-center justify-center z-10 border border-border-light">
               <span className="text-[10px] uppercase tracking-widest font-semibold text-accent-warm font-sans">Breathe</span>
             </div>
           </div>
@@ -56,12 +62,13 @@ export const SanctuaryModal = ({ isOpen, onClose }) => {
           </div>
 
           {/* Return Trigger */}
-          <button
+          <Button
             onClick={onClose}
-            className="z-10 px-8 py-3 bg-white hover:bg-primary/5 text-xs font-semibold text-text-primary border border-[#F0F0F0] hover:border-primary/20 rounded-full shadow-sm hover:shadow-antigravity transition-all duration-300 cursor-pointer focus:outline-none"
+            variant="outline"
+            className="z-10 px-8 py-3"
           >
             I'm ready to return
-          </button>
+          </Button>
         </motion.div>
       )}
     </AnimatePresence>

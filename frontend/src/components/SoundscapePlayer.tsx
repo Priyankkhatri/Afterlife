@@ -2,22 +2,35 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export const SoundscapePlayer = () => {
+export const SoundscapePlayer: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioCtxRef = useRef(null);
-  const masterGainRef = useRef(null);
-  const oscillatorsRef = useRef([]);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const masterGainRef = useRef<GainNode | null>(null);
+  const oscillatorsRef = useRef<{ osc: OscillatorNode; oscGain: GainNode }[]>([]);
 
   useEffect(() => {
     return () => {
-      stopSound();
+      // Clean stop on unmount without triggering state sets on unmounted component
+      if (audioCtxRef.current) {
+        const ctx = audioCtxRef.current;
+        oscillatorsRef.current.forEach(({ osc }) => {
+          try {
+            osc.stop();
+          } catch {
+            // Quiet catch
+          }
+        });
+        if (ctx.state !== 'closed') {
+          ctx.close();
+        }
+      }
     };
   }, []);
 
   const startSound = async () => {
     try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      const ctx = new AudioContext();
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      const ctx = new AudioContextClass();
       audioCtxRef.current = ctx;
 
       const masterGain = ctx.createGain();
@@ -28,7 +41,7 @@ export const SoundscapePlayer = () => {
 
       // Soothing C-Major 9 chord frequencies (C3, G3, B3, D4, E4)
       const frequencies = [130.81, 196.00, 246.94, 293.66, 329.63];
-      const oscillators = [];
+      const oscillators: { osc: OscillatorNode; oscGain: GainNode }[] = [];
 
       frequencies.forEach((freq, idx) => {
         const osc = ctx.createOscillator();
@@ -46,12 +59,14 @@ export const SoundscapePlayer = () => {
         oscillators.push({ osc, oscGain });
 
         const modulate = () => {
-          if (!ctx || ctx.state === 'closed') return;
+          if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') return;
           const cycleTime = 6 + idx * 2.5; 
           const targetVol = 0.08 + Math.random() * 0.15;
           try {
-            oscGain.gain.linearRampToValueAtTime(targetVol, ctx.currentTime + cycleTime);
-          } catch (err) {}
+            oscGain.gain.linearRampToValueAtTime(targetVol, audioCtxRef.current.currentTime + cycleTime);
+          } catch {
+            // Resolved warning: omitted unused err parameter
+          }
           setTimeout(modulate, cycleTime * 1000);
         };
         modulate();
@@ -75,14 +90,18 @@ export const SoundscapePlayer = () => {
         masterGain.gain.cancelScheduledValues(ctx.currentTime);
         masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
         masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 2.0); // 2 seconds release
-      } catch (err) {}
+      } catch {
+        // Resolved warning: omitted unused err parameter
+      }
     }
 
     setTimeout(() => {
       oscillatorsRef.current.forEach(({ osc }) => {
         try {
           osc.stop();
-        } catch (err) {}
+        } catch {
+          // Resolved warning: omitted unused err parameter
+        }
       });
       oscillatorsRef.current = [];
 
@@ -104,7 +123,7 @@ export const SoundscapePlayer = () => {
   };
 
   return (
-    <div className="flex items-center gap-3 bg-white/40 backdrop-blur-md border border-white/50 px-3.5 py-1.5 rounded-full shadow-sm select-none">
+    <div className="flex items-center gap-3 bg-white/40 dark:bg-black/30 backdrop-blur-md border border-white/50 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-sm select-none">
       <div className="flex items-center gap-1.5">
         <Sparkles className="w-3.5 h-3.5 text-accent-warm" />
         <span className="text-[10px] uppercase tracking-widest font-semibold text-text-muted">Soundscape</span>
@@ -120,7 +139,7 @@ export const SoundscapePlayer = () => {
             }}
             transition={{
               duration: 1.5 + bar * 0.3,
-              repeat: Infinity,
+              repeat: isPlaying ? Infinity : 0,
               ease: 'easeInOut'
             }}
             className="w-0.5 bg-accent-warm/60 rounded-full"
@@ -130,7 +149,8 @@ export const SoundscapePlayer = () => {
 
       <button
         onClick={toggleSound}
-        className="w-6 h-6 rounded-full bg-white hover:bg-accent-warm/5 flex items-center justify-center border border-[#F0F0F0] hover:border-accent-warm/20 text-text-primary hover:text-accent-warm transition-all duration-300 cursor-pointer focus:outline-none"
+        className="w-6 h-6 rounded-full bg-surface hover:bg-accent-warm/5 flex items-center justify-center border border-border-light text-text-primary hover:text-accent-warm transition-all duration-300 cursor-pointer focus:outline-none focus-ring"
+        aria-label={isPlaying ? "Pause soothing background soundscape" : "Play soothing background soundscape"}
       >
         {isPlaying ? (
           <Pause className="w-2.5 h-2.5 fill-current" />
