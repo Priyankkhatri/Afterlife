@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Sparkles, 
@@ -7,12 +7,9 @@ import {
   Map, 
   Users, 
   ArrowRight, 
-  Clock, 
   ChevronRight, 
-  Play, 
-  TrendingUp,
-  Fingerprint,
-  FileCheck
+  FileText, 
+  UploadCloud
 } from 'lucide-react';
 import { Card } from './ui/Card';
 import { FloatUp } from './MotionWrappers';
@@ -21,176 +18,72 @@ type Props = {
   onEnterApp: () => void;
 };
 
-// 2D Flow Canvas Particle Graphic Component
-const FlowCanvas = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+const chatPrompts = [
+  {
+    label: "What is my immediate task?",
+    response: "Your most urgent step is ordering 5-10 certified copies of the Death Certificate. You will need these to notify banks, insurance providers, and credit bureaus."
+  },
+  {
+    label: "Draft insurance claim letter",
+    response: "I've compiled the policy data from MetLife. Here is the draft: 'Subject: Policy Claim Inquiry - Robert Jenkins. Dear Claims Dept, I am writing as the nominated beneficiary...'"
+  },
+  {
+    label: "Explain Probate court",
+    response: "Probate is the court-supervised process of authenticating a last will and testament, appointing an executor, and distributing assets to beneficiaries."
+  }
+];
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animationId: number;
-    let width = (canvas.width = canvas.offsetWidth);
-    let height = (canvas.height = canvas.offsetHeight);
-
-    const particles: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      radius: number;
-      color: string;
-    }> = [];
-
-    // Colors matching our warm orange and sage palette
-    const colors = ['rgba(226, 154, 118, 0.25)', 'rgba(140, 165, 150, 0.25)', 'rgba(166, 180, 196, 0.25)'];
-
-    for (let i = 0; i < 40; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        radius: Math.random() * 4 + 2,
-        color: colors[Math.floor(Math.random() * colors.length)],
-      });
-    }
-
-    const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = canvas.offsetWidth;
-      height = canvas.height = canvas.offsetHeight;
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    const draw = () => {
-      ctx.clearRect(0, 0, width, height);
-
-      // Draw connections
-      for (let i = 0; i < particles.length; i++) {
-        const p1 = particles[i];
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
-          if (dist < 120) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(226, 154, 118, ${0.08 * (1 - dist / 120)})`;
-            ctx.lineWidth = 1;
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Draw and update particles
-      particles.forEach((p) => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < 0 || p.x > width) p.vx *= -1;
-        if (p.y < 0 || p.y > height) p.vy *= -1;
-      });
-
-      animationId = requestAnimationFrame(draw);
-    };
-
-    draw();
-
-    return () => {
-      cancelAnimationFrame(animationId);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none -z-10" />;
-};
-
-// Interactive Grief Breathing Tool (Empathetic Sanctuary Widget)
-const BreathingWidget = () => {
-  const [breathPhase, setBreathPhase] = useState<'in' | 'hold' | 'out'>('in');
-  const [timer, setTimer] = useState(4);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimer((prev) => {
-        if (prev <= 1) {
-          if (breathPhase === 'in') {
-            setBreathPhase('hold');
-            return 4;
-          } else if (breathPhase === 'hold') {
-            setBreathPhase('out');
-            return 4;
-          } else {
-            setBreathPhase('in');
-            return 4;
-          }
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [breathPhase]);
-
-  const getInstructions = () => {
-    switch (breathPhase) {
-      case 'in': return 'Breathe In';
-      case 'hold': return 'Hold & Rest';
-      case 'out': return 'Breathe Out';
-    }
-  };
-
-  const getScale = () => {
-    switch (breathPhase) {
-      case 'in': return 1.4;
-      case 'hold': return 1.4;
-      case 'out': return 1.0;
-    }
-  };
-
-  return (
-    <Card className="flex flex-col items-center justify-center text-center p-8 bg-white border border-border-light relative overflow-hidden group min-h-[300px]">
-      <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-wide">
-        <Heart className="w-3 h-3 fill-primary/10" />
-        <span>Grief Sanctuary</span>
-      </div>
-
-      <div className="relative w-40 h-40 flex items-center justify-center mt-6">
-        <motion.div
-          animate={{ scale: getScale() }}
-          transition={{ duration: 4, ease: "easeInOut" }}
-          className="absolute inset-0 rounded-full bg-primary/5 border border-primary/20"
-        />
-        <motion.div
-          animate={{ scale: getScale() * 0.85 }}
-          transition={{ duration: 4, ease: "easeInOut" }}
-          className="absolute inset-4 rounded-full bg-primary/10"
-        />
-        <div className="relative z-10 flex flex-col items-center">
-          <span className="font-serif text-sm font-semibold text-text-primary transition-all duration-500">
-            {getInstructions()}
-          </span>
-          <span className="text-[10px] text-text-muted mt-1 font-mono">{timer}s</span>
-        </div>
-      </div>
-      <p className="text-[11px] text-text-muted font-light leading-relaxed max-w-[200px] mt-6">
-        Take a moment for yourself. Pause and align before coordination tasks.
-      </p>
-    </Card>
-  );
-};
+// Mock documents for the interactive scanner demo
+const sampleDocs = [
+  {
+    id: 'cert',
+    name: 'Death_Certificate_Draft.pdf',
+    type: 'Vital Record',
+    status: 'Ready',
+    size: '1.2 MB',
+    extracted: [
+      { key: 'Decedent', value: 'Robert Jenkins' },
+      { key: 'Date of Passing', value: 'October 12, 2025' },
+      { key: 'Place of Death', value: 'San Francisco, CA' },
+      { key: 'Filing Deadline', value: 'January 10, 2026 (90 Days)' }
+    ]
+  },
+  {
+    id: 'insurance',
+    name: 'MetLife_Policy_No_8892.pdf',
+    type: 'Life Insurance',
+    status: 'Ready',
+    size: '3.4 MB',
+    extracted: [
+      { key: 'Provider', value: 'MetLife Financial Services' },
+      { key: 'Policy Value', value: '$35,000' },
+      { key: 'Beneficiary', value: 'Sarah Jenkins (Spouse)' },
+      { key: 'Claim Requirements', value: 'Form FE-6, Certified Death Cert' }
+    ]
+  },
+  {
+    id: 'will',
+    name: 'Last_Will_and_Testament.pdf',
+    type: 'Legal Document',
+    status: 'Ready',
+    size: '2.1 MB',
+    extracted: [
+      { key: 'Executor Nominated', value: 'Sarah Jenkins' },
+      { key: 'Estate Value', value: 'Real property & personal assets' },
+      { key: 'Probate Required', value: 'Yes (County Court)' },
+      { key: 'Witnesses', value: '2 Verified Signatures' }
+    ]
+  }
+];
 
 export const LandingPage = ({ onEnterApp }: Props) => {
+  const [selectedDocId, setSelectedDocId] = useState('cert');
+  const [scanning, setScanning] = useState(false);
   const [selectedFaq, setSelectedFaq] = useState<number | null>(null);
+
+  // Chat simulator state
+  const [activeMessageIndex, setActiveMessageIndex] = useState(0);
+  const [typingMessage, setTypingMessage] = useState('');
 
   // 3D Card Hover Handler
   const handle3DMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -212,26 +105,59 @@ export const LandingPage = ({ onEnterApp }: Props) => {
     card.style.boxShadow = 'none';
   };
 
+  // Handle document scan simulation
+  const triggerScan = (id: string) => {
+    setSelectedDocId(id);
+    setScanning(true);
+    setTimeout(() => {
+      setScanning(false);
+    }, 2000);
+  };
+
+  // Handle chat prompt simulation
+  const handleChatPrompt = (index: number) => {
+    setActiveMessageIndex(index);
+    setTypingMessage('');
+    const fullText = chatPrompts[index].response;
+    let currentIdx = 0;
+    
+    const interval = setInterval(() => {
+      if (currentIdx < fullText.length) {
+        setTypingMessage((prev) => prev + fullText.charAt(currentIdx));
+        currentIdx++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 15);
+  };
+
+  useEffect(() => {
+    // Run initial chat simulation
+    handleChatPrompt(0);
+  }, []);
+
+  const activeDoc = sampleDocs.find(d => d.id === selectedDocId) || sampleDocs[0];
+
   const features = [
     {
       icon: <ShieldCheck className="w-5 h-5 text-primary" />,
-      title: "Secure Document Vault",
-      desc: "Encrypt and organize death certificates, wills, bills, and insurance policies in one secure drawer."
+      title: "Secure Encrypted Vault",
+      desc: "Bank-grade AES-256 standard encryption protects death certificates, wills, accounts, and policies in a designated vault."
     },
     {
       icon: <Sparkles className="w-5 h-5 text-primary" />,
-      title: "AI Claims Recognition",
-      desc: "Our neural model scans uploaded policies to extract unclaimed assets, pensions, and insurance benefits."
+      title: "Intelligent OCR Benefits Scanning",
+      desc: "Upload insurance policies and court documents. Our OCR engine parses values, requirements, and deadlines automatically."
     },
     {
       icon: <Map className="w-5 h-5 text-primary" />,
-      title: "Step-by-Step Roadmap",
-      desc: "A personalized, chronological guide through vital records, probate courts, and utility notifications."
+      title: "Personalized Estate Roadmap",
+      desc: "Chronological milestone timeline guiding you through probate courts, tax filings, and utility transfers."
     },
     {
       icon: <Users className="w-5 h-5 text-primary" />,
-      title: "Family Co-Execution",
-      desc: "Share tasks, sync timelines, and securely collaborate with legal nominees or family members."
+      title: "Family Access & Nomination",
+      desc: "Share tasks, coordinate milestones, and assign access levels to trusted family attorneys or heirs."
     }
   ];
 
@@ -253,207 +179,253 @@ export const LandingPage = ({ onEnterApp }: Props) => {
   return (
     <div className="min-h-screen bg-[#FAF9F6] text-text-primary selection:bg-primary/10 overflow-x-hidden font-sans relative">
       
-      {/* 2D Floating Flow Graphic Background */}
-      <FlowCanvas />
+      {/* Dynamic Mesh Decorative Orbs */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-[120px] pointer-events-none -z-10" />
+      <div className="absolute top-[40%] left-0 w-[400px] h-[400px] rounded-full bg-accent-warm/5 blur-[100px] pointer-events-none -z-10" />
 
-      {/* Top Navigation Bar */}
-      <header className="fixed top-0 left-0 right-0 h-20 bg-[#FAF9F6]/80 backdrop-blur-lg z-40 border-b border-border-light/40 px-6 lg:px-12 flex items-center justify-between">
+      {/* Navigation Header */}
+      <header className="fixed top-0 left-0 right-0 h-20 bg-[#FAF9F6]/80 backdrop-blur-md z-40 border-b border-border-light/40 px-6 lg:px-12 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/25">
-            <Heart className="w-5 h-5 text-primary fill-primary/10 animate-pulse" />
+          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
+            <Heart className="w-5 h-5 text-primary fill-primary/10" />
           </div>
           <span className="font-serif text-2xl font-bold tracking-tight text-text-primary">Afterlife</span>
         </div>
 
         <nav className="hidden md:flex items-center gap-8 text-xs font-semibold text-text-muted">
           <a href="#features" className="hover:text-primary transition-colors">Features</a>
-          <a href="#demo" className="hover:text-primary transition-colors">How it works</a>
-          <a href="#faq" className="hover:text-primary transition-colors">FAQs</a>
+          <a href="#interactive-demo" className="hover:text-primary transition-colors">Interactive Demo</a>
+          <a href="#faq" className="hover:text-primary transition-colors">Common FAQs</a>
         </nav>
 
         <button 
           onClick={onEnterApp}
-          className="px-5 py-2.5 rounded-full bg-primary text-white text-xs font-semibold shadow-md hover:bg-primary-hover transition-all duration-300 flex items-center gap-1.5 active:scale-95 cursor-pointer"
+          className="px-5 py-2.5 rounded-full bg-primary text-white text-xs font-semibold shadow-sm hover:bg-primary-hover transition-all duration-300 flex items-center gap-1.5 cursor-pointer"
         >
-          <span>Launch Copilot</span>
+          <span>Enter Sanctuary App</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </header>
 
       {/* Hero Section */}
-      <section className="pt-36 pb-24 px-6 lg:px-12 max-w-7xl mx-auto flex flex-col items-center text-center relative">
-        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full bg-primary/5 blur-3xl -z-10 animate-pulse" />
-
-        {/* Floating Interactive 2D Elements in Hero */}
-        <motion.div 
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute left-10 top-40 hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white shadow-md border border-border-light text-xs font-medium"
-        >
-          <Fingerprint className="w-4 h-4 text-primary" />
-          <span>Biometric Secure Vault</span>
-        </motion.div>
-
-        <motion.div 
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute right-12 top-48 hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white shadow-md border border-border-light text-xs font-medium"
-        >
-          <FileCheck className="w-4 h-4 text-primary" />
-          <span>Claims Checklist Extracted</span>
-        </motion.div>
-
-        <FloatUp delay={0.1} className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 text-primary text-[11px] font-bold tracking-wide uppercase mb-8">
-          <Sparkles className="w-3.5 h-3.5 fill-primary/10" />
-          <span>Empathetic AI Estate Administration</span>
+      <section className="pt-36 pb-20 px-6 lg:px-12 max-w-7xl mx-auto text-center relative">
+        <FloatUp delay={0.1} className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 text-primary text-[11px] font-bold tracking-wide uppercase mb-6">
+          <Sparkles className="w-3.5 h-3.5 fill-primary/10 animate-pulse" />
+          <span>Interactive AI Death Administration Copilot</span>
         </FloatUp>
 
-        <FloatUp delay={0.2} className="max-w-4xl">
+        <FloatUp delay={0.2} className="max-w-4xl mx-auto">
           <h1 className="text-5xl lg:text-7xl font-serif font-bold text-text-primary tracking-tight leading-[1.1] mb-6">
-            Plan with calm.<br />AI handles the paperwork.
+            Calm, organized support when you need it most.
           </h1>
         </FloatUp>
 
-        <FloatUp delay={0.3} className="max-w-2xl">
-          <p className="text-sm lg:text-base text-text-muted font-light leading-relaxed mb-10">
-            Afterlife is your supportive digital assistant for loss administration. We securely organize folders, scan policies to detect unclaimed benefits, and draft notifications—helping families heal while we organize the chores.
+        <FloatUp delay={0.3} className="max-w-2xl mx-auto">
+          <p className="text-sm lg:text-base text-text-muted font-light leading-relaxed mb-8">
+            Manage probate records, coordinate tasks, scan insurance documents to claim benefits, and coordinate executor duties. We handle the paperwork, letting families focus on remembrance and healing.
           </p>
         </FloatUp>
 
-        <FloatUp delay={0.4} className="flex flex-col sm:flex-row gap-4 justify-center w-full">
+        <FloatUp delay={0.4} className="flex justify-center gap-4">
           <button 
             onClick={onEnterApp}
-            className="px-8 py-4 rounded-full bg-primary text-white text-sm font-semibold shadow-lg hover:bg-primary-hover transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+            className="px-8 py-4 rounded-full bg-primary text-white text-sm font-semibold shadow-lg hover:bg-primary-hover hover:shadow-xl transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95"
           >
-            <span>Get Started for Free</span>
+            <span>Launch Sandbox Copilot</span>
             <ArrowRight className="w-4 h-4" />
           </button>
-          <a 
-            href="#demo"
-            className="px-8 py-4 rounded-full bg-white border border-border-light text-text-primary text-sm font-semibold shadow-sm hover:border-primary transition-all duration-300 flex items-center justify-center gap-2 active:scale-95"
-          >
-            <Play className="w-4 h-4 text-primary fill-primary/10" />
-            <span>See How it Works</span>
-          </a>
         </FloatUp>
       </section>
 
-      {/* Main App Layout Preview Frame */}
-      <section id="demo" className="px-6 lg:px-12 pb-28 max-w-6xl mx-auto">
-        <FloatUp delay={0.5}>
-          {/* 3D Interactive Tilt Card (App Preview Container) */}
-          <div 
-            onMouseMove={handle3DMove}
-            onMouseLeave={handle3DLeave}
-            className="bg-white rounded-3xl p-4 shadow-xl border border-border-light/60 overflow-hidden relative group transition-all duration-200 ease-out transform"
-            style={{ transformStyle: 'preserve-3d' }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none" />
-            <div className="bg-[#FAF9F6]/50 rounded-2xl p-6 border border-border-light flex flex-col gap-6" style={{ transform: 'translateZ(20px)' }}>
-              
-              {/* Fake dashboard preview row */}
-              <div className="flex justify-between items-center pb-4 border-b border-border-light/60">
-                <div>
-                  <h3 className="font-serif text-lg font-bold text-text-primary">Estate Dashboard</h3>
-                  <p className="text-xs text-text-muted font-light mt-0.5">Executor Hub Overview</p>
-                </div>
-                <div className="px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold">
-                  33% Complete
-                </div>
-              </div>
+      {/* Showcase Grid (Simulated Interactive UI Core) */}
+      <section id="interactive-demo" className="px-6 lg:px-12 py-16 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+        
+        {/* Module 1: Interactive Document Scanner Simulator */}
+        <FloatUp delay={0.5} className="flex flex-col h-full justify-between">
+          <div className="flex flex-col gap-4 mb-6">
+            <span className="text-[11px] font-bold text-primary tracking-wide uppercase">Sandbox Demo 01</span>
+            <h2 className="text-3xl font-serif font-bold text-text-primary">Interactive Benefits OCR</h2>
+            <p className="text-xs text-text-muted font-light leading-relaxed">
+              Select one of the sample estate documents below to simulate our OCR scanning engine. Watch how Afterlife analyzes coordinates, indexes names, and builds claims automatically.
+            </p>
+          </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                {/* Column 1: Scanned policy */}
-                <Card className="flex flex-col gap-3 transition-transform duration-300 hover:-translate-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-primary tracking-wide uppercase">AI Scan</span>
-                    <Clock className="w-3.5 h-3.5 text-text-muted" />
-                  </div>
-                  <h4 className="font-serif text-sm font-bold">certified_death_certificate.pdf</h4>
-                  <div className="h-2 w-full bg-border-light rounded-full overflow-hidden mt-1">
-                    <motion.div 
-                      animate={{ width: ['0%', '75%'] }}
-                      transition={{ duration: 1.5, ease: "easeOut" }}
-                      className="h-full bg-primary rounded-full" 
-                    />
-                  </div>
-                  <span className="text-[10px] text-text-muted">Extracted 4 major deadlines</span>
-                </Card>
-
-                {/* Column 2: Claims */}
-                <Card className="flex flex-col gap-3 border border-primary/25 bg-primary/5 transition-transform duration-300 hover:-translate-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-primary tracking-wide uppercase">Detected Claim</span>
-                    <TrendingUp className="w-3.5 h-3.5 text-primary" />
-                  </div>
-                  <h4 className="font-serif text-sm font-bold">MetLife Life Insurance</h4>
-                  <p className="text-xs font-serif text-primary font-bold">$35,000 Estimated Value</p>
-                  <span className="text-[10px] text-text-muted">Draft letter template prepared</span>
-                </Card>
-
-                {/* Column 3: Copilot */}
-                <Card className="flex flex-col gap-3 transition-transform duration-300 hover:-translate-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-text-muted tracking-wide uppercase">AI Copilot</span>
-                    <Sparkles className="w-3.5 h-3.5 text-primary" />
-                  </div>
-                  <p className="text-[11px] text-text-muted font-light italic leading-relaxed">
-                    "I have drafted the Social Security Administration notification form. Ready to review?"
-                  </p>
-                  <button 
-                    onClick={onEnterApp}
-                    className="w-full py-2 bg-primary text-white text-[11px] font-bold rounded-lg mt-1 cursor-pointer"
-                  >
-                    Open Copilot
-                  </button>
-                </Card>
-
-              </div>
+          <div className="bg-white rounded-3xl p-6 border border-border-light shadow-md flex-1 flex flex-col gap-6 relative">
+            
+            {/* Tabs Row */}
+            <div className="flex gap-2 p-1 bg-[#FAF9F6] border border-border-light rounded-xl">
+              {sampleDocs.map((doc) => (
+                <button
+                  key={doc.id}
+                  onClick={() => triggerScan(doc.id)}
+                  className={`flex-1 py-2 text-[10px] font-bold rounded-lg transition-colors cursor-pointer ${selectedDocId === doc.id ? 'bg-white shadow-xs text-primary' : 'text-text-muted hover:text-text-primary'}`}
+                >
+                  {doc.type}
+                </button>
+              ))}
             </div>
+
+            {/* Document Sandbox Visualizer */}
+            <div className="bg-[#FAF9F6]/40 border border-border-light/60 rounded-2xl p-5 flex flex-col gap-4 relative overflow-hidden min-h-[220px] justify-center">
+              
+              {scanning && (
+                <motion.div 
+                  initial={{ top: '0%' }}
+                  animate={{ top: '100%' }}
+                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute left-0 right-0 h-0.5 bg-primary shadow-[0_0_8px_rgba(226,154,118,0.8)] z-10"
+                />
+              )}
+
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
+                  <FileText className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <h4 className="font-serif text-sm font-bold text-text-primary">{activeDoc.name}</h4>
+                  <span className="text-[10px] text-text-muted font-light">{activeDoc.size} • {activeDoc.type}</span>
+                </div>
+              </div>
+
+              <div className="border-t border-border-light pt-4 flex flex-col gap-3">
+                <div className="flex justify-between items-center text-[10px] font-bold text-text-muted uppercase tracking-wide">
+                  <span>Extracted Metadata</span>
+                  <span className="text-primary flex items-center gap-1">
+                    {scanning ? 'OCR Indexing...' : 'Scan Complete'}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 mt-1">
+                  {activeDoc.extracted.map((field, idx) => (
+                    <motion.div 
+                      key={idx}
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.1 }}
+                      className="p-2 rounded-lg bg-white border border-[#F2F2F2] flex flex-col gap-0.5"
+                    >
+                      <span className="text-[9px] text-text-muted font-light">{field.key}</span>
+                      <span className="text-[11px] font-bold text-text-primary truncate">{field.value}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            <button 
+              onClick={onEnterApp}
+              className="w-full py-3 bg-primary text-white text-xs font-semibold rounded-xl hover:bg-primary-hover transition-colors shadow-xs flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <UploadCloud className="w-4 h-4" />
+              <span>Simulate Custom PDF Upload</span>
+            </button>
+
           </div>
         </FloatUp>
+
+        {/* Module 2: Interactive AI Chatbot Simulator */}
+        <FloatUp delay={0.6} className="flex flex-col h-full justify-between">
+          <div className="flex flex-col gap-4 mb-6">
+            <span className="text-[11px] font-bold text-primary tracking-wide uppercase">Sandbox Demo 02</span>
+            <h2 className="text-3xl font-serif font-bold text-text-primary">Empathetic AI Copilot</h2>
+            <p className="text-xs text-text-muted font-light leading-relaxed">
+              Ask the Afterlife Copilot common administrative or grief-coordination questions. Test the responsive conversation interface below to see how our assistant guides you.
+            </p>
+          </div>
+
+          <div className="bg-white rounded-3xl p-6 border border-border-light shadow-md flex-1 flex flex-col justify-between gap-6">
+            
+            {/* Conversation Window */}
+            <div className="flex-1 bg-[#FAF9F6]/40 border border-border-light/60 rounded-2xl p-5 flex flex-col gap-4 min-h-[220px]">
+              
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                  <Heart className="w-4 h-4 text-primary fill-primary/10" />
+                </div>
+                <div className="flex-1 p-3 rounded-2xl bg-white border border-[#F2F2F2]">
+                  <span className="text-[10px] font-bold text-primary tracking-wide uppercase block mb-1">Afterlife Assistant</span>
+                  <p className="text-xs text-text-primary leading-relaxed font-light">
+                    Hello. I am here to assist with any document organization, notification drafting, or general estate questions.
+                  </p>
+                </div>
+              </div>
+
+              {/* Typed user response block */}
+              <div className="flex items-start gap-3 justify-end">
+                <div className="flex-1 p-3 rounded-2xl bg-primary text-white border border-primary-hover max-w-[80%]">
+                  <span className="text-[9px] font-bold opacity-80 uppercase block mb-1">User Inquiry</span>
+                  <p className="text-xs leading-relaxed font-semibold">
+                    {chatPrompts[activeMessageIndex].label}
+                  </p>
+                </div>
+              </div>
+
+              {/* Bot typing block */}
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                  <Heart className="w-4 h-4 text-primary fill-primary/10" />
+                </div>
+                <div className="flex-1 p-3 rounded-2xl bg-white border border-[#F2F2F2]">
+                  <span className="text-[10px] font-bold text-primary tracking-wide uppercase block mb-1">Afterlife Assistant</span>
+                  <p className="text-xs text-text-primary leading-relaxed font-light min-h-[40px] whitespace-pre-wrap">
+                    {typingMessage || '...'}
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Quick Actions Prompts */}
+            <div className="flex flex-col gap-2">
+              <span className="text-[10px] font-bold text-text-muted uppercase tracking-wide">Test Prompts</span>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                {chatPrompts.map((prompt, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleChatPrompt(index)}
+                    className={`py-2 px-3 text-[10px] rounded-lg border text-left font-medium transition-all cursor-pointer truncate ${activeMessageIndex === index ? 'bg-primary/5 border-primary text-primary' : 'bg-white border-border-light text-text-muted hover:border-text-muted hover:text-text-primary'}`}
+                  >
+                    {prompt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </FloatUp>
+
       </section>
 
-      {/* Grid displaying 3D tilt feature cards + Interactive Breathing Box */}
+      {/* Feature Grid with 3D Tilt Hover Effects */}
       <section id="features" className="bg-[#FFFFFF] border-y border-border-light py-28 px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-20">
             <h2 className="text-3xl lg:text-5xl font-serif font-bold mb-6">
-              Empathetic coordination tools
+              Settle estate tasks securely
             </h2>
             <p className="text-sm text-text-muted font-light leading-relaxed">
-              We know estate paperwork is stressful. Afterlife provides calm, structured coordinates to settle tasks at your own pace.
+              We know estate paperwork is stressful. Afterlife provides calm, structured coordinates to manage tasks at your own pace.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            {/* Features list (takes 2 columns) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:col-span-2">
-              {features.map((feat, index) => (
-                <FloatUp key={index} delay={0.1 * index}>
-                  <div 
-                    onMouseMove={handle3DMove}
-                    onMouseLeave={handle3DLeave}
-                    className="h-full flex flex-col gap-4 p-8 border border-[#F0F0F0] rounded-2xl bg-[#FAF9F6]/20 transition-all duration-200 ease-out cursor-default"
-                    style={{ transformStyle: 'preserve-3d' }}
-                  >
-                    <div className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center border border-primary/10" style={{ transform: 'translateZ(15px)' }}>
-                      {feat.icon}
-                    </div>
-                    <h3 className="font-serif text-lg font-bold text-text-primary" style={{ transform: 'translateZ(20px)' }}>{feat.title}</h3>
-                    <p className="text-xs text-text-muted font-light leading-relaxed" style={{ transform: 'translateZ(10px)' }}>{feat.desc}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feat, index) => (
+              <FloatUp key={index} delay={0.1 * index}>
+                <div 
+                  onMouseMove={handle3DMove}
+                  onMouseLeave={handle3DLeave}
+                  className="h-full flex flex-col gap-4 p-8 border border-[#F0F0F0] rounded-3xl bg-[#FAF9F6]/20 transition-all duration-200 ease-out cursor-default transform"
+                  style={{ transformStyle: 'preserve-3d' }}
+                >
+                  <div className="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center border border-primary/10" style={{ transform: 'translateZ(15px)' }}>
+                    {feat.icon}
                   </div>
-                </FloatUp>
-              ))}
-            </div>
-
-            {/* Breathing Sanctuary widget (takes 1 column) */}
-            <FloatUp delay={0.3} className="h-full">
-              <BreathingWidget />
-            </FloatUp>
-
+                  <h3 className="font-serif text-lg font-bold text-text-primary" style={{ transform: 'translateZ(20px)' }}>{feat.title}</h3>
+                  <p className="text-xs text-text-muted font-light leading-relaxed" style={{ transform: 'translateZ(10px)' }}>{feat.desc}</p>
+                </div>
+              </FloatUp>
+            ))}
           </div>
         </div>
       </section>
@@ -517,7 +489,7 @@ export const LandingPage = ({ onEnterApp }: Props) => {
             onClick={onEnterApp}
             className="px-8 py-4 rounded-full bg-white text-primary text-sm font-semibold shadow-lg hover:bg-[#F5FBF6] transition-colors inline-flex items-center gap-1.5 active:scale-95 duration-200 cursor-pointer"
           >
-            <span>Launch Copilot App</span>
+            <span>Launch Sandbox Copilot</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
