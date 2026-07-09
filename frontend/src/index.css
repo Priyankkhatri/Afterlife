@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-background: #FAFAFA;
+  --color-surface: #FFFFFF;
+  
+  --color-primary: #8CA596;
+  --color-primary-hover: #7A9384;
+  
+  --color-secondary: #A6B4C4;
+  --color-secondary-hover: #95A3B3;
+  
+  --color-text-primary: #2A2F35;
+  --color-text-muted: #6B7280;
+  
+  --color-border-light: #F0F0F0;
+
+  --font-serif: "Instrument Serif", "Playfair Display", serif;
+  --font-sans: "Inter", "Geist", sans-serif;
+
+  --shadow-antigravity: 0 10px 40px -10px rgba(0, 0, 0, 0.03);
+  --shadow-antigravity-hover: 0 20px 50px -12px rgba(0, 0, 0, 0.05);
+}
+
+@layer base {
+  html, body {
+    background-color: #FAFAFA;
+    font-family: 'Inter', sans-serif;
+    color: #6B7280;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Instrument Serif', serif;
+    color: #2A2F35;
+    font-weight: 500;
+  }
+}
+
+/* Antigravity Glass Panel */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(240, 240, 240, 0.8);
+}
