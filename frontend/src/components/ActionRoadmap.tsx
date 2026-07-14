@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FadeIn, FloatUp } from './MotionWrappers';
+
 import { TaskGroup } from './TaskGroup';
 import { QuietProgress } from './QuietProgress';
 import { Calendar, HelpCircle, ArrowUpRight, CheckCircle2 } from 'lucide-react';
