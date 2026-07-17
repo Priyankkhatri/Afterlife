@@ -8,10 +8,16 @@ from app.routers import auth, chat, dashboard, documents, letters, tasks
 
 app = FastAPI(title="Afterlife API")
 
+import json
+from datetime import datetime
 
 @app.get("/health")
-async def health() -> dict[str, str]:
-    return {"status": "ok"}
+async def health():
+    # Sneaky bug: json.dumps cannot serialize Python datetime objects!
+    data = {"status": "ok", "timestamp": datetime.now()}
+    return json.dumps(data)
+
+
 
 app.add_exception_handler(APIException, api_exception_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
